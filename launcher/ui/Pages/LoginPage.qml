@@ -1,0 +1,223 @@
+// SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtQuick.Layouts
+
+import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.formcard as FormCard
+import org.kde.kirigamiaddons.components as Components
+
+import zone.xiv.umbra
+
+QQC2.Control {
+    id: page
+
+    bottomPadding: Kirigami.Units.largeSpacing
+
+    readonly property string invalidLoginReason: {
+        if (!LauncherCore.currentProfile.account) {
+            return i18n("Profile has no associated account.");
+        }
+
+        if (usernameField.text.length === 0) {
+            return i18n("Username is required.");
+        }
+
+        if (LauncherCore.currentProfile.account.needsPassword && passwordField.text.length === 0) {
+            return i18n("Password is required.");
+        }
+
+        return "";
+    }
+
+    readonly property bool isLoginValid: {
+        if (!LauncherCore.currentProfile.account) {
+            return false;
+        }
+
+        if (usernameField.text.length === 0) {
+            return false;
+        }
+
+        if (LauncherCore.currentProfile.account.needsPassword && passwordField.text.length === 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function updateFields(): void {
+        usernameField.text = LauncherCore.currentProfile.account.config.name;
+        passwordField.text = !LauncherCore.currentProfile.account.needsPassword && LauncherCore.currentProfile.account.config.rememberPassword ? LauncherCore.currentProfile.account.getPassword() : "";
+    }
+
+    Connections {
+        target: LauncherCore.currentProfile
+
+        function onAccountChanged(): void {
+            page.updateFields();
+            page.updateFocus();
+        }
+    }
+
+    Connections {
+        target: LauncherCore.currentProfile.account
+
+        function onNeedsPasswordChanged(): void {
+            page.updateFocus();
+        }
+    }
+
+    function updateFocus(): void {
+        if (LauncherCore.currentProfile.account.needsPassword && (!LauncherCore.currentProfile.account.config.rememberPassword || passwordField.text === "")) {
+            passwordField.forceActiveFocus();
+            return;
+        }
+
+        loginButton.forceActiveFocus();
+    }
+
+    Component.onCompleted: {
+        updateFields();
+        updateFocus();
+    }
+
+    contentItem: ColumnLayout {
+        width: parent.width
+
+        spacing: Kirigami.Units.largeSpacing
+
+        FormCard.FormCard {
+            maximumWidth: Kirigami.Units.gridUnit * 25
+            visible: LauncherCore.profileManager.numProfiles > 1
+
+            Layout.fillWidth: true
+
+            FormCard.FormButtonDelegate {
+                id: currentProfileDelegate
+
+                text: LauncherCore.currentProfile.config.name
+
+                QQC2.Menu {
+                    id: profileMenu
+
+                    modal: true
+
+                    Repeater {
+                        model: LauncherCore.profileManager
+
+                        QQC2.MenuItem {
+                            id: profileMenuItem
+
+                            required property var profile
+
+                            QQC2.MenuItem {
+                                text: profileMenuItem.profile.config.name
+
+                                onClicked: {
+                                    LauncherCore.currentProfile = profileMenuItem.profile;
+                                    profileMenu.close();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                onClicked: profileMenu.popup(currentProfileDelegate, currentProfileDelegate.width - profileMenu.width, currentProfileDelegate.height)
+            }
+        }
+
+        FormCard.FormCard {
+            id: regularLoginCard
+
+            maximumWidth: Kirigami.Units.gridUnit * 25
+
+            Layout.fillWidth: true
+
+            FormCard.FormButtonDelegate {
+                id: currentAccountDelegate
+
+                enabled: LauncherCore.accountManager.numAccounts > 1
+                text: LauncherCore.currentProfile.account.config.name
+
+                leadingPadding: Kirigami.Units.largeSpacing * 2
+
+                QQC2.Menu {
+                    id: accountMenu
+
+                    modal: true
+
+                    Repeater {
+                        model: LauncherCore.accountManager
+
+                        QQC2.MenuItem {
+                            id: menuItem
+
+                            required property var account
+
+                            QQC2.MenuItem {
+                                text: menuItem.account.config.name
+
+                                onClicked: {
+                                    LauncherCore.currentProfile.account = menuItem.account;
+                                    accountMenu.close();
+                                }
+                            }
+                        }
+                    }
+                }
+
+                onClicked: accountMenu.popup(currentAccountDelegate, currentAccountDelegate.width - accountMenu.width, currentAccountDelegate.height)
+            }
+
+            FormCard.FormDelegateSeparator {
+                above: currentAccountDelegate
+                below: usernameField
+            }
+
+            FormCard.FormTextFieldDelegate {
+                id: usernameField
+                label: i18n("Square Enix ID")
+                text: LauncherCore.currentProfile.account.config.name
+                enabled: false
+
+                QQC2.ToolTip.text: i18n("The username can only be changed under account settings.")
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+                QQC2.ToolTip.visible: hovered
+            }
+
+            FormCard.FormDelegateSeparator {
+                above: usernameField
+                below: passwordField
+            }
+
+            FormCard.FormPasswordFieldDelegate {
+                id: passwordField
+                label: i18n("Square Enix Password")
+                onAccepted: loginButton.clicked()
+            }
+
+            FormCard.FormDelegateSeparator {
+                above: passwordField
+                below: loginButton
+            }
+
+            FormCard.FormButtonDelegate {
+                id: loginButton
+
+                text: i18n("Log In")
+                description: page.invalidLoginReason
+                icon.name: "unlock"
+                enabled: page.isLoginValid
+                onClicked: {
+                    page.Window.window.pageStack.layers.push(Qt.createComponent("zone.xiv.umbra", "StatusPage"))
+                    LauncherCore.login(LauncherCore.currentProfile, usernameField.text, passwordField.text);
+                }
+            }
+        }
+    }
+}

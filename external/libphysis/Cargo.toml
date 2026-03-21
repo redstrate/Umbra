@@ -1,0 +1,24 @@
+[package]
+name = "libphysis"
+version = "0.6.0"
+authors = ["Joshua Goins <josh@redstrate.com>"]
+edition = "2024"
+description = "C bindings for physis"
+license = "GPL-3.0"
+repository = "https://git.sr.ht/~redstrate/libphysis"
+keywords = ["ffxiv", "modding"]
+readme = "README.md"
+publish = false
+
+[lib]
+name = "physis"
+crate-type = ["staticlib"]
+
+[profile.release]
+lto = true
+
+[build-dependencies]
+cbindgen = { version = "0.29", default-features = false }
+
+[dependencies]
+physis = { git = "https://github.com/redstrate/physis", default-features = false }

@@ -1,0 +1,51 @@
+name: Main
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  reuse:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: REUSE Compliance Check
+      uses: fsfe/reuse-action@v5
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/cache@v4
+      id: cache-deps
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install \
+          libunshield-dev \
+    - name: Install Cargo dependencies
+      if: steps.cache-deps.outputs.cache-hit != 'true'
+      run: |
+        cargo install --locked cargo-deny
+    - name: Build
+      run: cargo build --verbose
+    - name: Run clippy
+      run: cargo clippy
+    - name: Run deny-check
+      run: |
+        cargo deny check

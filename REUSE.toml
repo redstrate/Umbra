@@ -1,0 +1,16 @@
+version = 1
+SPDX-PackageName = "Umbra"
+SPDX-PackageSupplier = "Joshua Goins <josh@redstrate.com>"
+SPDX-PackageDownloadLocation = "https://github.com/redstrate/umbra"
+
+[[annotations]]
+path = [".gitmodules", "README.md", "BUILDING.md", "FLATPAK.md", "CONTRIBUTING.md", ".build.yml", ".editorconfig", "zone.xiv.umbra.yml", "zone.xiv.umbra.desktop", "misc/**", "scripts/**", ".github/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Joshua Goins <josh@redstrate.com>"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ["zone.xiv.umbra.svg", "resources/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Joshua Goins <josh@redstrate.com>"
+SPDX-License-Identifier = "CC-BY-SA-4.0"

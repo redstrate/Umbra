@@ -1,0 +1,60 @@
+// SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+pragma ComponentBehavior: Bound
+
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Window
+
+import org.kde.kirigami as Kirigami
+import org.kde.kirigamiaddons.formcard as FormCard
+import org.kde.kirigamiaddons.components as Components
+
+import zone.xiv.umbra
+
+FormCard.FormCardPage {
+    id: root
+
+    title: i18nc("@title:window", "Accounts")
+
+    actions: [
+        Kirigami.Action {
+            text: i18n("Add Account…")
+            icon.name: "list-add-symbolic"
+            onTriggered: root.Window.window.pageStack.layers.push(Qt.createComponent("zone.xiv.umbra", "AddSquareEnix"))
+        }
+    ]
+
+    FormCard.FormCard {
+        Layout.topMargin: Kirigami.Units.largeSpacing * 4
+        visible: repeater.count !== 0
+
+        Repeater {
+            id: repeater
+
+            model: LauncherCore.accountManager
+
+            ColumnLayout {
+                id: layout
+
+                required property var account
+                required property int index
+
+                spacing: 0
+
+                FormCard.FormButtonDelegate {
+                    text: layout.account.config.name
+
+                    onClicked: root.Window.window.pageStack.layers.push(Qt.createComponent("zone.xiv.umbra", "AccountSettings"), {
+                        account: layout.account
+                    })
+                }
+
+                FormCard.FormDelegateSeparator {
+                    visible: layout.index + 1 < LauncherCore.accountManager.numAccounts
+                }
+            }
+        }
+    }
+}

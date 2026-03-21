@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+[Desktop Entry]
+Name=Umbra
+GenericName=FFXIV Launcher
+Comment=Linux launcher for FFXIV
+Exec=umbra %u
+Terminal=false
+Icon=zone.xiv.umbra
+Type=Application
+Categories=Game;
+X-KDE-FormFactor=desktop;tablet;
+SingleMainWindow=true

@@ -1,0 +1,6 @@
+[submodule "external/kdsingleapplication"]
+	path = external/kdsingleapplication
+	url = https://github.com/KDAB/KDSingleApplication.git
+[submodule "external/libphysis"]
+	path = external/libphysis
+	url = https://github.com/redstrate/libphysis

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+                          http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+<!--
+SPDX-FileCopyrightText: Joshua Goins <josh@redstrate.com>
+SPDX-License-Identifier: CC0-1.0
+-->
+  <kcfgfile arg="true" />
+  <group name="General">
+    <entry name="CloseWhenLaunched" type="bool">
+      <default>true</default>
+    </entry>
+    <entry name="AutoLogin" type="string">
+    </entry>
+    <entry name="ShowDevTools" type="bool">
+      <default>false</default>
+    </entry>
+    <entry name="AutoLoginProfile" type="String">
+    </entry>
+    <entry name="LaunchHack" type="bool">
+      <default>false</default>
+    </entry>
+  </group>
+  <group name="Sync">
+    <entry name="EnableSync" type="bool">
+      <default>false</default>
+    </entry>
+  </group>
+  <group name="Developer">
+    <entry name="KeepPatches" type="bool">
+      <default>false</default>
+    </entry>
+    <entry name="PreferredProtocol" type="String">
+      <default>https</default>
+    </entry>
+    <entry key="EncryptArguments" type="bool">
+      <default>true</default>
+    </entry>
+    <entry key="EnableRenderDocCapture" type="bool">
+      <default>false</default>
+    </entry>
+    <entry name="DXVKRepository" type="String">
+      <default>doitsujin/dxvk</default>
+    </entry>
+    <entry name="WineRepository" type="String">
+      <default>goatcorp/wine-xiv-git</default>
+    </entry>
+    <entry name="GithubApi" type="String">
+      <default>api.github.com</default>
+    </entry>
+    <entry name="EnableWayland" type="bool">
+      <default>false</default>
+    </entry>
+    <entry name="GPUDeviceFilter" type="String">
+      <default></default>
+    </entry>
+  </group>
+</kcfg>

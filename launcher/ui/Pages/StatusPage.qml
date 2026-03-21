@@ -1,0 +1,121 @@
+// SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+import QtQuick
+import QtQuick.Window
+
+import org.kde.kirigami as Kirigami
+
+import zone.xiv.umbra
+
+Kirigami.Page {
+    id: root
+
+    property var gameInstaller
+
+    title: i18n("Logging in...")
+
+    onBackRequested: (event) => {
+        if (LauncherCore.isPatching()) {
+            // Prevent going back
+            applicationWindow().showPassiveNotification(i18n("Please do not quit while patching!"));
+            event.accepted = true;
+        }
+    }
+
+    Kirigami.LoadingPlaceholder {
+        id: placeholder
+
+        text: "Logging in..."
+
+        anchors.centerIn: parent
+    }
+
+    Kirigami.PromptDialog {
+        id: errorDialog
+
+        showCloseButton: false
+        standardButtons: Kirigami.Dialog.Ok
+
+        onAccepted: applicationWindow().checkSetup()
+        onRejected: applicationWindow().checkSetup()
+    }
+
+    Kirigami.PromptDialog {
+        id: updateDialog
+
+        showCloseButton: false
+        standardButtons: Kirigami.Dialog.Yes | Kirigami.Dialog.Cancel
+
+        onAccepted: LauncherCore.updateDecided(true)
+        onRejected: {
+            LauncherCore.updateDecided(false);
+            applicationWindow().checkSetup();
+        }
+    }
+
+    Kirigami.PromptDialog {
+        id: assetDialog
+
+        showCloseButton: false
+        standardButtons: Kirigami.Dialog.Cancel
+
+        customFooterActions: [
+            Kirigami.Action {
+                icon.name: "checkmark-symbolic"
+                text: i18n("Continue Anyway")
+                onTriggered: assetDialog.accept()
+            }
+        ]
+
+        onAccepted: LauncherCore.assetDecided(true)
+        onRejected: {
+            LauncherCore.assetDecided(false);
+            applicationWindow().checkSetup();
+        }
+    }
+
+    Connections {
+        target: LauncherCore
+
+        function onStageChanged(message: string, explanation: string): void {
+            placeholder.text = message;
+            placeholder.explanation = explanation;
+        }
+
+        function onStageIndeterminate(): void {
+            placeholder.determinate = false;
+        }
+
+        function onStageDeterminate(min: int, max: int, value: int): void {
+            placeholder.determinate = true;
+            placeholder.progressBar.value = value;
+            placeholder.progressBar.from = min;
+            placeholder.progressBar.to = max;
+        }
+
+        function onLoginError(message: string): void {
+            errorDialog.title = i18n("Login Error");
+            errorDialog.subtitle = message;
+            errorDialog.open();
+        }
+
+        function onMiscError(message: string): void {
+            errorDialog.title = i18n("Error");
+            errorDialog.subtitle = message;
+            errorDialog.open();
+        }
+        
+        function onRequiresUpdate(message: string): void {
+            updateDialog.title = i18n("Update Required");
+            updateDialog.subtitle = message;
+            updateDialog.open();
+        }
+
+        function onAssetError(message: string): void {
+            assetDialog.title = i18n("Error");
+            assetDialog.subtitle = message;
+            assetDialog.open();
+        }
+    }
+}

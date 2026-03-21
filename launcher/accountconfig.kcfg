@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+                          http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+<!--
+SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+SPDX-License-Identifier: CC0-1.0
+-->
+  <kcfgfile/>
+    <kcfgfile name="umbrastaterc" stateConfig="true">
+      <parameter name="uuid"/>
+    </kcfgfile>
+    <include>account.h</include>
+    <include>accountmanager.h</include>
+    <group name="account-$(uuid)">
+      <entry key="Name" type="string">
+      </entry>
+      <entry key="RememberPassword" type="bool">
+      <default>false</default>
+      </entry>
+      <entry name="PreferredProtocol" type="String">
+        <default>http</default>
+      </entry>
+      <entry name="LobbyServer" type="String">
+        <default></default>
+      </entry>
+      <entry name="BootPatchServer" type="String">
+        <default></default>
+      </entry>
+      <entry name="GamePatchServer" type="String">
+        <default></default>
+      </entry>
+      <entry name="LoginServer" type="String">
+        <default></default>
+      </entry>
+      <entry key="WinePrefixPath" type="Path">
+        <default code="true">AccountManager::getDefaultWinePrefixPath(mParamuuid)</default>
+      </entry>
+    </group>
+</kcfg>

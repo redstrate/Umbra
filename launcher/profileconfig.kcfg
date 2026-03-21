@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0
+                          http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
+<!--
+SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
+SPDX-License-Identifier: CC0-1.0
+-->
+    <include>profilemanager.h</include>
+    <kcfgfile name="umbrastaterc" stateConfig="true">
+      <parameter name="uuid"/>
+    </kcfgfile>
+    <include>profile.h</include>
+    <group name="profile-$(uuid)">
+      <entry key="Name" type="string">
+      </entry>
+      <entry key="Account" type="string">
+      </entry>
+      <entry key="GamePath" type="Path">
+        <default code="true">ProfileManager::getDefaultGamePath(mParamuuid)</default>
+      </entry>
+      <entry key="WinePath" type="Path">
+      </entry>
+      <entry key="WineType" type="Enum">
+        <choices name="Profile::WineType">
+          <choice name="BuiltIn">
+          </choice>
+          <choice name="Custom">
+          </choice>
+        </choices>
+        <default>BuiltIn</default>
+      </entry>
+      <entry key="AllowPatching" type="bool">
+        <default>true</default>
+      </entry>
+      <entry key="BootUpdateChannel" type="String">
+        <default>ffxiv_release_boot</default>
+      </entry>
+      <entry key="GameUpdateChannel" type="String">
+        <default>ffxiv_release_game</default>
+      </entry>
+    </group>
+</kcfg>
