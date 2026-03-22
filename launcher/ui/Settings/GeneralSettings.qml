@@ -34,24 +34,6 @@ FormCard.FormCardPage {
 
         FormCard.FormDelegateSeparator {
             above: closeUmbraDelegate
-            below: launchHackDelegate
-        }
-
-        FormCard.FormCheckDelegate {
-            id: launchHackDelegate
-
-            text: i18n("Enable launch hack")
-            description: i18n("Makes the game launch slower, which helps it reliably launch.")
-            checked: LauncherCore.config.launchHack
-            visible: !LauncherCore.isWindows
-            onCheckedChanged: {
-                LauncherCore.config.launchHack = checked;
-                LauncherCore.config.save();
-            }
-        }
-
-        FormCard.FormDelegateSeparator {
-            above: launchHackDelegate
             below: showDevToolsDelegate
         }
 

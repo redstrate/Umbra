@@ -19,9 +19,6 @@ SPDX-License-Identifier: CC0-1.0
     </entry>
     <entry name="AutoLoginProfile" type="String">
     </entry>
-    <entry name="LaunchHack" type="bool">
-      <default>false</default>
-    </entry>
   </group>
   <group name="Sync">
     <entry name="EnableSync" type="bool">
