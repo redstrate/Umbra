@@ -26,7 +26,10 @@ GameRunner::GameRunner(LauncherCore &launcher, QObject *parent)
 
 void GameRunner::beginGameExecutable(Profile &profile, const std::optional<LoginAuth> &auth)
 {
-    patchGameExecutable(profile);
+    if (const auto errorString = patchGameExecutable(profile); !errorString.isEmpty()) {
+        Q_EMIT m_launcher.miscError(errorString);
+        return;
+    }
 
     const QString gameExecutable = profile.config()->gamePath() + QStringLiteral("/ffxivgame.exe");
     beginVanillaGame(gameExecutable, profile, auth);
