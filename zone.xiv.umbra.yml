@@ -25,8 +25,7 @@ finish-args:
   - --socket=x11
   - --socket=wayland
   - --share=network
-  # Default directory for screenshots
-  - --filesystem=xdg-pictures:rw
+  # For audio
   - --socket=pulseaudio
   # Allow access to the GNOME secret service API and to talk to the GNOME keyring daemon
   - --talk-name=org.freedesktop.secrets
