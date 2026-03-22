@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include <QString>
+
 class Profile;
 
-void patchGameExecutable(const Profile &profile);
+QString patchGameExecutable(const Profile &profile);

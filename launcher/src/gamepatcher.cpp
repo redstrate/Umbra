@@ -8,23 +8,30 @@
 #include "profile.h"
 #include "profileconfig.h"
 
+#include <KLocalizedString>
 #include <QDir>
 
 // The patching process happens statically (for now) as I couldn't figure out how to adapt LauncherTweaks to inject into a 32-bit process.
 // It also does this weird backup system because the client is *very* specific about where files are located and what the executable is named as.
 // So yes, I did try other methods and none of them worked as reliably at the time, unfortunately.
 
-void patchGameExecutable(const Profile &profile)
+QString patchGameExecutable(const Profile &profile)
 {
     const QString originalGameExecutable = QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivgame.exe"));
     const QString backupExePath = QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivgame.retail.exe"));
 
     if (!QFile::exists(backupExePath)) {
-        QFile::copy(originalGameExecutable, backupExePath);
+        if (!QFile::copy(originalGameExecutable, backupExePath)) {
+            qWarning() << "Failed to copy original game EXE for patching!";
+            return i18n("Failed to copy original game EXE for patching!");
+        }
     }
 
     QFile originalExe(backupExePath);
-    Q_ASSERT(originalExe.open(QIODevice::ReadOnly));
+    if (!originalExe.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to patch:" << originalExe.errorString();
+        return i18n("Failed to patch: %1").arg(originalExe.errorString());
+    }
 
     QByteArray exeData = originalExe.readAll();
 
@@ -45,6 +52,11 @@ void patchGameExecutable(const Profile &profile)
     // TODO: patch out the location of the user directory?
 
     QFile newExe(originalGameExecutable);
-    Q_ASSERT(newExe.open(QIODevice::WriteOnly));
+    if (!newExe.open(QIODevice::WriteOnly)) {
+        qWarning() << "Failed to patch:" << newExe.errorString();
+        return i18n("Failed to patch: %1").arg(newExe.errorString());
+    }
     newExe.write(exeData);
+
+    return {};
 }
