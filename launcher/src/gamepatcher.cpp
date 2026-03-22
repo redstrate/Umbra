@@ -38,6 +38,9 @@ void patchGameExecutable(const Profile &profile)
         exeData.replace(existingLobbyUrl, newLobbyUrl);
     }
 
+    // Patch out the JNZ instruction with a JMP one so the tick count always passes
+    exeData.replace(0x374b, 1, QByteArrayLiteral("\xEB"));
+
     // TODO: patch out the lobby port?
     // TODO: patch out the location of the user directory?
 
