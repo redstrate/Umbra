@@ -96,10 +96,6 @@ QString GameRunner::getGameArgs(const Profile &profile, const std::optional<Logi
 
 void GameRunner::launchExecutable(const Profile &profile, QProcess *process, const QStringList &args, bool isGame, bool needsRegistrySetup)
 {
-    if (m_launcher.config()->launchHack()) {
-        QDir(profile.account()->config()->winePrefixPath()).removeRecursively();
-    }
-
     QList<QString> arguments;
     auto env = process->processEnvironment();
 
