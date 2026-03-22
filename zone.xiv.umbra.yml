@@ -35,6 +35,8 @@ finish-args:
   - --talk-name=org.kde.kwalletd5
   - --talk-name=org.kde.kwalletd6
   - --device=all
+  # It's a 32-bit game!
+  - --allow=multiarch
 modules:
   - name: qtkeychain
     cleanup:
