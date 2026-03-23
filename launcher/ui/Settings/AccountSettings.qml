@@ -146,22 +146,6 @@ FormCard.FormCardPage {
         Layout.topMargin: Kirigami.Units.largeSpacing
 
         FormCard.FormTextFieldDelegate {
-            id: preferredProtocolDelegate
-
-            label: i18n("Preferred Protocol")
-            text: page.account.config.preferredProtocol
-            onTextChanged: {
-                page.account.config.preferredProtocol = text;
-                page.account.config.save();
-            }
-        }
-
-        FormCard.FormDelegateSeparator {
-            above: preferredProtocolDelegate
-            below: loginServerDelegate
-        }
-
-        FormCard.FormTextFieldDelegate {
             id: loginServerDelegate
 
             label: i18n("Login Server")

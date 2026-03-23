@@ -73,9 +73,7 @@ QCoro::Task<bool> SquareEnixLogin::checkBootUpdates()
     Q_EMIT m_launcher.stageChanged(i18n("Checking for launcher updates..."));
     qInfo(UMBRA_LOG) << "Checking for updates to boot components...";
 
-    QUrl url;
-    url.setScheme(QStringLiteral("http"));
-    url.setHost(m_info->profile->account()->config()->bootPatchServer());
+    QUrl url = QUrl::fromUserInput(m_info->profile->account()->config()->bootPatchServer());
     url.setPath(QStringLiteral("/http/%2/%3").arg(m_info->profile->config()->bootUpdateChannel(), m_info->profile->bootVersion()));
 
     auto request = QNetworkRequest(url);
@@ -146,9 +144,7 @@ QCoro::Task<std::optional<SquareEnixLogin::StoredInfo>> SquareEnixLogin::getStor
     query.addQueryItem(QStringLiteral("isnew"), QString::number(1));
     query.addQueryItem(QStringLiteral("launchver"), QString::number(3));
 
-    QUrl url;
-    url.setScheme(m_info->profile->account()->config()->preferredProtocol());
-    url.setHost(m_info->profile->account()->config()->loginServer());
+    QUrl url = QUrl::fromUserInput(m_info->profile->account()->config()->loginServer());
     url.setPath(QStringLiteral("/oauth/ffxiv/login/top"));
     url.setQuery(query);
 
@@ -190,9 +186,7 @@ QCoro::Task<bool> SquareEnixLogin::loginOAuth()
     postData.addQueryItem(QStringLiteral("sqexid"), m_info->username);
     postData.addQueryItem(QStringLiteral("password"), m_info->password);
 
-    QUrl url;
-    url.setScheme(m_info->profile->account()->config()->preferredProtocol());
-    url.setHost(m_info->profile->account()->config()->loginServer());
+    QUrl url = QUrl::fromUserInput(m_info->profile->account()->config()->loginServer());
     url.setPath(QStringLiteral("/oauth/ffxiv/login/login.send"));
 
     QNetworkRequest request(url);
@@ -250,9 +244,7 @@ QCoro::Task<bool> SquareEnixLogin::registerSession()
 {
     qInfo(UMBRA_LOG) << "Registering the session...";
 
-    QUrl url;
-    url.setScheme(m_info->profile->account()->config()->preferredProtocol());
-    url.setHost(m_info->profile->account()->config()->gamePatchServer());
+    QUrl url = QUrl::fromUserInput(m_info->profile->account()->config()->gamePatchServer());
     url.setPath(QStringLiteral("/http/%2/%3/%4").arg(m_info->profile->config()->gameUpdateChannel(), m_info->profile->baseGameVersion(), m_SID));
 
     auto request = QNetworkRequest(url);
