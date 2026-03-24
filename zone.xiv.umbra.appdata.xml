@@ -26,6 +26,7 @@
     <url type="vcs-browser">https://github.com/redstrate/umbra</url>
     <launchable type="desktop-id">zone.xiv.umbra.desktop</launchable>
     <releases>
+        <release version="0.1.2" date="03-23-2026"/>
         <release version="0.1.1" date="03-21-2026"/>
         <release version="0.1.0" date="03-21-2026"/>
     </releases>
