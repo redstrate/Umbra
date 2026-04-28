@@ -8,7 +8,7 @@ Unofficial FFXIV launcher for 1.x clients.
 
 ## Get It
 
-Details on where to find stable releases of Umbra can be found on its [homepage](https://xiv.zone/umbra/install).
+Details on where to find stable releases of Umbra can be found on its [homepage](https://xiv.zone/software/umbra/install/).
 
 ## Building
 
