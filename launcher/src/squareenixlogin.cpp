@@ -164,8 +164,7 @@ QCoro::Task<std::optional<SquareEnixLogin::StoredInfo>> SquareEnixLogin::getStor
     if (match.hasMatch()) {
         co_return StoredInfo{match.captured(1), url};
     } else {
-        Q_EMIT m_launcher.loginError(
-            i18n("Square Enix servers refused to confirm session information. The game may be under maintenance, try the official launcher."));
+        Q_EMIT m_launcher.loginError(i18n("The server refused to confirm session information."));
         co_return {};
     }
 }

@@ -181,7 +181,7 @@ QQC2.Control {
 
             FormCard.FormTextFieldDelegate {
                 id: usernameField
-                label: i18n("Square Enix ID")
+                label: i18n("Username")
                 text: LauncherCore.currentProfile.account.config.name
                 enabled: false
 
@@ -197,7 +197,7 @@ QQC2.Control {
 
             FormCard.FormPasswordFieldDelegate {
                 id: passwordField
-                label: i18n("Square Enix Password")
+                label: i18n("Password")
                 onAccepted: loginButton.clicked()
             }
 
