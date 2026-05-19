@@ -146,7 +146,8 @@ target_link_libraries(umbra PRIVATE
         Qt6::Widgets
         Qt6::QuickControls2
         KF6::Kirigami
-        KF6::IconThemes)
+        KF6::IconThemes
+        KirigamiApp)
 
 if (WIN32)
     set_target_properties(umbra PROPERTIES

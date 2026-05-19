@@ -5,10 +5,15 @@
 #include <KIconTheme>
 #include <KLocalizedContext>
 #include <KLocalizedString>
+#include <KirigamiApp>
 #include <QApplication> // NOTE: do not remove this, if your IDE suggests to do so
 #include <QQuickStyle>
 #include <kdsingleapplication.h>
 #include <qcoroqml.h>
+
+#ifdef Q_OS_WINDOWS
+#include <QStyleFactory>
+#endif
 
 #include "umbra-version.h"
 #include "launchercore.h"
@@ -19,9 +24,15 @@ using namespace Qt::StringLiterals;
 
 int main(int argc, char *argv[])
 {
-    KIconTheme::initTheme();
+    KIconTheme::initTheme(); // TODO: KirigamiApp doesn't call this before app construction so it doesn't work on Windows
 
-    const QApplication app(argc, argv);
+    KirigamiApp::App app(argc, argv);
+    KirigamiApp kapp;
+
+    // TODO: remove once https://invent.kde.org/libraries/kirigami-addons/-/merge_requests/399 is merged
+#ifdef Q_OS_WINDOWS
+    app.setStyle(QStyleFactory::create(QStringLiteral("Breeze")));
+#endif
 
     const KDSingleApplication singleApplication;
     if (!singleApplication.isPrimaryInstance()) {
@@ -79,13 +90,6 @@ int main(int argc, char *argv[])
     if (parser.isSet(QStringLiteral("version"))) {
         parser.showVersion();
     }
-
-#if defined(Q_OS_LINUX)
-    // Default to org.kde.desktop style unless the user forces another style
-    if (qEnvironmentVariableIsEmpty("QT_QUICK_CONTROLS_STYLE")) {
-        QQuickStyle::setStyle(QStringLiteral("org.kde.desktop"));
-    }
-#endif
 
     QCoro::Qml::registerTypes();
 
