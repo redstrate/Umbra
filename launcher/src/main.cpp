@@ -10,10 +10,6 @@
 #include <kdsingleapplication.h>
 #include <qcoroqml.h>
 
-#ifdef HAVE_WEBVIEW
-#include <QtWebView>
-#endif
-
 #include "umbra-version.h"
 #include "launchercore.h"
 #include "logger.h"
@@ -23,10 +19,6 @@ using namespace Qt::StringLiterals;
 
 int main(int argc, char *argv[])
 {
-#ifdef HAVE_WEBVIEW
-    QtWebView::initialize();
-#endif
-
     KIconTheme::initTheme();
 
     const QApplication app(argc, argv);
