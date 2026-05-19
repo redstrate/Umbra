@@ -5,10 +5,10 @@ on:
   pull_request:
 
 env:
-  QT_VERSION: 6.10.1 # Keep in sync with CMakeLists.txt
-  KF_VERSION: v6.21.0 # Ditto
-  KIRIGAMI_ADDONS_VERSION: v1.10.0 # Ditto x2
-  PLASMA_VERSION: v6.5.4 # For Breeze
+  QT_VERSION: 6.10.3 # Keep in sync with CMakeLists.txt
+  KF_VERSION: v6.26.0 # Ditto
+  KIRIGAMI_ADDONS_VERSION: v1.12.0 # Ditto x2
+  PLASMA_VERSION: v6.6.5 # For Breeze
   COMMON_CMAKE_OPTIONS: "-DBUILD_TESTING=OFF -DBUILD_PYTHON_BINDINGS=OFF"
   QCORO_VERSION: v0.13.0
 
@@ -313,6 +313,9 @@ jobs:
           Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiPrivate.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
           Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiTemplates.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
           Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiPolyfill.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
+          Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiControls.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
+          Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiForms.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
+          Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiFormsPrivateCards.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
           Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiLayoutsPrivate.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
           Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/bin/KirigamiApp.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/bin
           Copy-Item -Path ${{ steps.strings.outputs.prefix-dir }}/lib/plugins/styles/breeze6.dll -Destination ${{ steps.strings.outputs.build-output-dir }}/bin/plugins/styles
