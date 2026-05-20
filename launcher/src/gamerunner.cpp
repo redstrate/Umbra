@@ -91,7 +91,13 @@ QString GameRunner::getGameArgs(const Profile &profile, const std::optional<Logi
 
     QString argJoined;
     for (const auto &[key, value] : gameArgs) {
-        argJoined += argFormat.arg(key, value);
+        // We have to double-up on spaces, otherwise the encryption will destroy them. UserPath - for example - can contain spaces if the username does on
+        // Windows.
+        const auto escapeSpaces = [](QString string) {
+            return string.replace(QLatin1Char(' '), QStringLiteral("  "));
+        };
+
+        argJoined += argFormat.arg(escapeSpaces(key), escapeSpaces(value));
     }
 
     return m_launcher.config()->encryptArguments() ? encryptGameArg(argJoined) : argJoined;
