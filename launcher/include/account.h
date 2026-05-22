@@ -36,6 +36,7 @@ Q_SIGNALS:
     bool needsPasswordChanged();
     void winePrefixChanged();
     void autoConfigurationResult(const QString &title, const QString &subtitle);
+    void resetConfiguration();
 
 private:
     QCoro::Task<> fetchPassword();

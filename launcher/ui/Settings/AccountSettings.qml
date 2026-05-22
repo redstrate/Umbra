@@ -27,6 +27,10 @@ FormCard.FormCardPage {
             configurationPrompt.visible = true;
             page.reloadServerConfiguration();
         }
+
+        function onResetConfiguration(): void {
+            page.reloadServerConfiguration();
+        }
     }
 
     // Needed because Kirigami Add-ons overwrites our bindings with static values
@@ -66,7 +70,7 @@ FormCard.FormCardPage {
             },
             Kirigami.Action {
                 id: serverAction
-                text: i18n("Server")
+                text: i18n("Servers")
                 icon.name: "network-server-symbolic"
             }
         ]
@@ -87,6 +91,26 @@ FormCard.FormCardPage {
             text: page.account.config.name
             onTextChanged: {
                 page.account.config.name = text;
+                page.account.config.save();
+            }
+        }
+
+        FormCard.FormDelegateSeparator {
+            above: usernameDelegate
+            below: winePrefixPathDelegate
+            visible: LauncherCore.config.showDevTools
+        }
+
+        FormFolderDelegate {
+            id: winePrefixPathDelegate
+
+            text: i18n("Wine Prefix Folder")
+            folder: page.account.config.winePrefixPath
+            displayText: page.account.isWinePrefixDefault ? i18n("Default Location") : folder
+            visible: LauncherCore.config.showDevTools
+
+            onAccepted: (path) => {
+                page.account.config.winePrefixPath = path;
                 page.account.config.save();
             }
         }
@@ -120,7 +144,7 @@ FormCard.FormCardPage {
         FormCard.FormTextFieldDelegate {
             id: serverUrlDelegate
 
-            label: i18n("Server URL")
+            label: i18n("Autoconfig Server URL")
         }
 
         FormCard.FormDelegateSeparator {
@@ -136,6 +160,20 @@ FormCard.FormCardPage {
             enabled: serverUrlDelegate.text.length > 0
 
             onClicked: LauncherCore.downloadServerConfiguration(page.account, serverUrlDelegate.text)
+        }
+
+        FormCard.FormDelegateSeparator {
+            above: downloadConfigDelegate
+            below: resetConfigDelegate
+        }
+
+        FormCard.FormButtonDelegate {
+            id: resetConfigDelegate
+
+            icon.name: "kt-restore-defaults-symbolic"
+            text: i18nc("@action:button", "Reset to Defaults")
+
+            onClicked: LauncherCore.resetServerConfiguration(page.account)
         }
     }
 
@@ -196,24 +234,6 @@ FormCard.FormCardPage {
             label: i18n("Lobby Server")
             onTextChanged: {
                 page.account.config.lobbyServer = text;
-                page.account.config.save();
-            }
-        }
-
-        FormCard.FormDelegateSeparator {
-            above: gameServerDelegate
-            below: winePrefixPathDelegate
-        }
-
-        FormFolderDelegate {
-            id: winePrefixPathDelegate
-
-            text: i18n("Wine Prefix Folder")
-            folder: page.account.config.winePrefixPath
-            displayText: page.account.isWinePrefixDefault ? i18n("Default Location") : folder
-
-            onAccepted: (path) => {
-                page.account.config.winePrefixPath = path;
                 page.account.config.save();
             }
         }

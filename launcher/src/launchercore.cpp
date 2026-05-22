@@ -346,4 +346,14 @@ void LauncherCore::downloadServerConfiguration(Account *account, const QString &
     beginAutoConfiguration(account, url);
 }
 
+void LauncherCore::resetServerConfiguration(Account *account)
+{
+    account->config()->setGamePatchServer({});
+    account->config()->setBootPatchServer({});
+    account->config()->setLobbyServer({});
+    account->config()->setLoginServer({});
+
+    Q_EMIT account->resetConfiguration();
+}
+
 #include "moc_launchercore.cpp"
