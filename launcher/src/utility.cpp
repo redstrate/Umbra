@@ -8,11 +8,6 @@
 
 using namespace Qt::StringLiterals;
 
-QString Utility::toWindowsPath(const QDir &dir)
-{
-    return QStringLiteral("Z:") + dir.absolutePath().replace('/'_L1, '\\'_L1);
-}
-
 void Utility::printRequest(const QString &type, const QNetworkRequest &request)
 {
     qDebug(UMBRA_HTTP) << type.toUtf8().constData() << request.url().toDisplayString();

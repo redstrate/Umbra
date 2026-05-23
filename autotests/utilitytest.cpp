@@ -10,11 +10,6 @@ class UtilityTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    void testToWindowsPath()
-    {
-        QCOMPARE(Utility::toWindowsPath(QStringLiteral("/home/testuser/test.txt")), QStringLiteral("Z:\\home\\testuser\\test.txt"));
-    }
-
     void testCreatePathIfNeeded()
     {
         QTemporaryDir dir;
