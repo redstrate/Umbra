@@ -81,7 +81,7 @@ public:
     void setAutoLoginProfile(const Profile *value);
 
     // Networking misc.
-    void buildRequest(const Profile &settings, QNetworkRequest &request);
+    void buildRequest(QNetworkRequest &request);
     void setupIgnoreSSL(QNetworkReply *reply);
 
     [[nodiscard]] bool isLoadingFinished() const;
@@ -133,7 +133,7 @@ protected:
 private:
     QCoro::Task<> beginLogin(LoginInformation &info);
 
-    QCoro::Task<> handleGameExit(const Profile *profile);
+    QCoro::Task<> handleGameExit();
 
     QCoro::Task<> beginAutoConfiguration(Account *account, QString url);
 

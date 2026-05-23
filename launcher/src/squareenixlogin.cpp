@@ -149,7 +149,7 @@ QCoro::Task<std::optional<SquareEnixLogin::StoredInfo>> SquareEnixLogin::getStor
     url.setQuery(query);
 
     auto request = QNetworkRequest(url);
-    m_launcher.buildRequest(*m_info->profile, request);
+    m_launcher.buildRequest(request);
 
     Utility::printRequest(QStringLiteral("GET"), request);
 
@@ -189,7 +189,7 @@ QCoro::Task<bool> SquareEnixLogin::loginOAuth()
     url.setPath(QStringLiteral("/oauth/ffxiv/login/login.send"));
 
     QNetworkRequest request(url);
-    m_launcher.buildRequest(*m_info->profile, request);
+    m_launcher.buildRequest(request);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setRawHeader(QByteArrayLiteral("Referer"), referer.toEncoded());
     request.setRawHeader(QByteArrayLiteral("Cache-Control"), QByteArrayLiteral("no-cache"));

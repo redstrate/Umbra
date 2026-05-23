@@ -146,7 +146,7 @@ void LauncherCore::setAutoLoginProfile(const Profile *profile)
     Q_EMIT autoLoginProfileChanged();
 }
 
-void LauncherCore::buildRequest(const Profile &settings, QNetworkRequest &request)
+void LauncherCore::buildRequest(QNetworkRequest &request)
 {
     Utility::setSSL(request);
 
@@ -246,7 +246,7 @@ QCoro::Task<> LauncherCore::beginLogin(LoginInformation &info)
     assetUpdater->deleteLater();
 }
 
-QCoro::Task<> LauncherCore::handleGameExit(const Profile *profile)
+QCoro::Task<> LauncherCore::handleGameExit()
 {
     qCDebug(UMBRA_LOG) << "Game has closed.";
 
