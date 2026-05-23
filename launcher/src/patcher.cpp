@@ -141,9 +141,12 @@ QCoro::Task<bool> Patcher::patch(const physis_PatchList &patchList)
             connect(patchReply, &QNetworkReply::readyRead, this, [tempPatchPath, patchReply] {
                 // TODO: don't open the file each time we receive data
                 QFile file(tempPatchPath);
-                file.open(QIODevice::WriteOnly | QIODevice::Append);
-                file.write(patchReply->readAll());
-                file.close();
+                if (file.open(QIODevice::WriteOnly | QIODevice::Append)) {
+                    file.write(patchReply->readAll());
+                    file.close();
+                } else {
+                    qCWarning(UMBRA_PATCHER) << "Failed to open" << file.fileName() << "for writing:" << file.errorString();
+                }
             });
 
             synchronizer.addFuture(QtFuture::connect(patchReply, &QNetworkReply::finished).then([this, ourIndex, patchPath, tempPatchPath] {
@@ -187,7 +190,9 @@ void Patcher::processPatch(const QueuedPatch &patch)
     // Perform hash checking
     if (!patch.hashes.isEmpty()) {
         auto f = QFile(patch.path);
-        f.open(QIODevice::ReadOnly);
+        if (!f.open(QIODevice::ReadOnly)) {
+            qCWarning(UMBRA_PATCHER()) << "Failed to open" << f.fileName() << "for reading:" << f.errorString();
+        }
 
         qDebug(UMBRA_PATCHER) << "Installing" << patch.path;
 

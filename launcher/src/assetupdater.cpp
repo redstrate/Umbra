@@ -166,9 +166,12 @@ QCoro::Task<bool> AssetUpdater::installCompatibilityTool() const
     qInfo(UMBRA_LOG) << "Finished downloading compatibility tool";
 
     QFile file(m_tempDir.filePath(QStringLiteral("wine.tar.xz")));
-    file.open(QIODevice::WriteOnly);
-    file.write(reply->readAll());
-    file.close();
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(reply->readAll());
+        file.close();
+    } else {
+        qCWarning(UMBRA_LOG) << "Failed to open" << file.fileName() << "for writing:" << file.errorString();
+    }
 
     KTar archive(m_tempDir.filePath(QStringLiteral("wine.tar.xz")));
     if (!archive.open(QIODevice::ReadOnly)) {
@@ -206,9 +209,12 @@ QCoro::Task<bool> AssetUpdater::installDxvkTool() const
     }
 
     QFile file(m_tempDir.filePath(QStringLiteral("dxvk.tar.xz")));
-    file.open(QIODevice::WriteOnly);
-    file.write(reply->readAll());
-    file.close();
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(reply->readAll());
+        file.close();
+    } else {
+        qCWarning(UMBRA_LOG) << "Failed to open" << file.fileName() << "for writing:" << file.errorString();
+    }
 
     KTar archive(m_tempDir.filePath(QStringLiteral("dxvk.tar.xz")));
     if (!archive.open(QIODevice::ReadOnly)) {

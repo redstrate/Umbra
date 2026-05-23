@@ -3,6 +3,7 @@
 
 #include "utility.h"
 #include "umbra_http_log.h"
+#include "umbra_log.h"
 
 #include <QSslConfiguration>
 
@@ -32,7 +33,9 @@ void Utility::setSSL(QNetworkRequest &request)
 QString Utility::readVersion(const QString &path)
 {
     QFile file(path);
-    file.open(QFile::ReadOnly | QFile::Text);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        qCWarning(UMBRA_LOG) << "Failed to open" << file.fileName() << "for reading:" << file.errorString();
+    }
 
     return QString::fromUtf8(file.readAll()).trimmed();
 }
@@ -41,7 +44,7 @@ void Utility::writeVersion(const QString &path, const QString &version)
 {
     QFile verFile(path);
     if (!verFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qWarning() << "Not able to write" << version << "to" << path << "because" << verFile.errorString();
+        qCWarning(UMBRA_LOG) << "Not able to write" << version << "to" << path << "because" << verFile.errorString();
         return;
     }
     verFile.write(version.toUtf8());

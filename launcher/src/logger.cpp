@@ -2,12 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "logger.h"
+
+#include "umbra_log.h"
 #include "utility.h"
 
 #include <QByteArray>
+#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QMutexLocker>
 #include <QStandardPaths>
 #include <QtLogging>
@@ -78,7 +82,9 @@ public:
         }
 
         file.setFileName(logDirectory.absoluteFilePath(QStringLiteral("umbra.0.log")));
-        file.open(QIODevice::WriteOnly | QIODevice::Unbuffered);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Unbuffered)) {
+            qCWarning(UMBRA_LOG) << "Failed to open" << file.fileName() << "for writing:" << file.errorString();
+        }
     }
 
 private:
