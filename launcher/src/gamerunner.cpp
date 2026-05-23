@@ -31,7 +31,7 @@ void GameRunner::beginGameExecutable(Profile &profile, const std::optional<Login
         return;
     }
 
-    const QString gameExecutable = profile.config()->gamePath() + QStringLiteral("/ffxivgame.exe");
+    const QString gameExecutable = QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivgame.exe"));
     beginVanillaGame(gameExecutable, profile, auth);
 
     Q_EMIT m_launcher.successfulLaunch();
@@ -44,7 +44,7 @@ void GameRunner::openOfficialLauncher(Profile &profile)
 
     new ProcessLogger(QStringLiteral("ffxivlauncher"), process);
 
-    launchExecutable(profile, process, {profile.config()->gamePath() + QStringLiteral("/ffxivboot.exe")}, false, true);
+    launchExecutable(profile, process, {QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivboot.exe"))}, false, true);
 }
 
 void GameRunner::openConfigTool(Profile &profile)
@@ -54,7 +54,7 @@ void GameRunner::openConfigTool(Profile &profile)
 
     new ProcessLogger(QStringLiteral("ffxivconfig"), process);
 
-    launchExecutable(profile, process, {profile.config()->gamePath() + QStringLiteral("/ffxivconfig.exe")}, false, true);
+    launchExecutable(profile, process, {QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivconfig.exe"))}, false, true);
 }
 
 void GameRunner::beginVanillaGame(const QString &gameExecutablePath, Profile &profile, const std::optional<LoginAuth> &auth)

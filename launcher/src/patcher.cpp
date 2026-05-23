@@ -233,9 +233,9 @@ void Patcher::processPatch(const QueuedPatch &patch)
 
     QString verFilePath;
     if (m_isBoot) {
-        verFilePath = m_baseDirectory + QStringLiteral("/boot.ver");
+        verFilePath = QDir(m_baseDirectory).absoluteFilePath(QStringLiteral("boot.ver"));
     } else {
-        verFilePath = m_baseDirectory + QStringLiteral("/game.ver");
+        verFilePath = QDir(m_baseDirectory).absoluteFilePath(QStringLiteral("game.ver"));
     }
 
     Utility::writeVersion(verFilePath, patch.version);

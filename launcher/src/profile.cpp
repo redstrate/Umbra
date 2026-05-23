@@ -60,8 +60,8 @@ void Profile::readWineInfo()
 
 void Profile::readGameVersion()
 {
-    m_bootVersion = Utility::readVersion(config()->gamePath() + QStringLiteral("/boot.ver"));
-    m_gameVersion = Utility::readVersion(config()->gamePath() + QStringLiteral("/game.ver"));
+    m_bootVersion = Utility::readVersion(QDir(config()->gamePath()).absoluteFilePath(QStringLiteral("boot.ver")));
+    m_gameVersion = Utility::readVersion(QDir(config()->gamePath()).absoluteFilePath(QStringLiteral("game.ver")));
     Q_EMIT versionTextChanged();
 }
 
