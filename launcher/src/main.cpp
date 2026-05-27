@@ -13,6 +13,11 @@
 
 #ifdef Q_OS_WINDOWS
 #include <QStyleFactory>
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+#include "umbra_log.h"
 #endif
 
 #include "umbra-version.h"
@@ -24,6 +29,22 @@ using namespace Qt::StringLiterals;
 
 int main(int argc, char *argv[])
 {
+    // Restrict to first 14 threads on Windows as the game will crash when running on 16 or more threads.
+    // This is handled via taskset on Linux, but on Windows that doesn't exist. If we set our own affinity, that's then passed to our children.
+#if defined(Q_OS_WIN)
+    HANDLE hProcess = GetCurrentProcess();
+
+    unsigned long lProcessAffinityMask = 0;
+    unsigned long lSystemAffinityMask = 0;
+    GetProcessAffinityMask(hProcess, reinterpret_cast<PDWORD_PTR>(&lProcessAffinityMask), reinterpret_cast<PDWORD_PTR>(&lSystemAffinityMask));
+
+    lProcessAffinityMask &= 0x3FFF;
+
+    if (!SetProcessAffinityMask(hProcess, lProcessAffinityMask)) {
+        qCWarning(UMBRA_LOG) << "Could not set process affinity, the game will NOT launch correctly on certain systems!";
+    }
+#endif
+
     KIconTheme::initTheme(); // TODO: KirigamiApp doesn't call this before app construction so it doesn't work on Windows
 
     KirigamiApp::App app(argc, argv);
