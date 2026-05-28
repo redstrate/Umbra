@@ -56,11 +56,7 @@ void Account::setKeychainValue(const QString &key, const QString &value)
 {
     auto job = new QKeychain::WritePasswordJob(QStringLiteral("Umbra"), this);
     job->setTextData(value);
-#ifdef FLATPAK
-    job->setKey(QStringLiteral("flatpak-") + m_key + QStringLiteral("-") + key);
-#else
     job->setKey(m_key + QStringLiteral("-") + key);
-#endif
     job->start();
 
     connect(job, &QKeychain::WritePasswordJob::finished, this, [job] {
@@ -73,11 +69,7 @@ void Account::setKeychainValue(const QString &key, const QString &value)
 QCoro::Task<QString> Account::getKeychainValue(const QString &key)
 {
     auto job = new QKeychain::ReadPasswordJob(QStringLiteral("Umbra"), this);
-#ifdef FLATPAK
-    job->setKey(QStringLiteral("flatpak-") + m_key + QStringLiteral("-") + key);
-#else
     job->setKey(m_key + QStringLiteral("-") + key);
-#endif
     job->start();
 
     co_await qCoro(job, &QKeychain::ReadPasswordJob::finished);
