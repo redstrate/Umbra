@@ -79,6 +79,9 @@ target_link_libraries(umbra_static PUBLIC
         QCoro::Network
         QCoro::Qml
         physis)
+if (LINUX)
+    target_link_libraries(umbra_static PUBLIC KF6::FileMetaData)
+endif()
 kconfig_target_kcfg_file(umbra_static FILE config.kcfg CLASS_NAME Config MUTATORS GENERATE_PROPERTIES GENERATE_MOC DEFAULT_VALUE_GETTERS PARENT_IN_CONSTRUCTOR QML_REGISTRATION QML_UNCREATABLE USE_ENUM_TYPES)
 kconfig_target_kcfg_file(umbra_static FILE accountconfig.kcfg CLASS_NAME AccountConfig MUTATORS GENERATE_PROPERTIES GENERATE_MOC DEFAULT_VALUE_GETTERS PARENT_IN_CONSTRUCTOR QML_REGISTRATION QML_UNCREATABLE USE_ENUM_TYPES)
 kconfig_target_kcfg_file(umbra_static FILE profileconfig.kcfg CLASS_NAME ProfileConfig MUTATORS GENERATE_PROPERTIES GENERATE_MOC DEFAULT_VALUE_GETTERS PARENT_IN_CONSTRUCTOR QML_REGISTRATION QML_UNCREATABLE USE_ENUM_TYPES)
