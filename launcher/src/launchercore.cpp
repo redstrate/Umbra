@@ -5,6 +5,7 @@
 #include <KFileMetaData/UserMetaData>
 #endif
 #include <KLocalizedString>
+#include <KSystemInhibitor>
 #include <QDir>
 #include <QImage>
 #include <QNetworkAccessManager>
@@ -21,12 +22,6 @@
 #include "profileconfig.h"
 #include "squareenixlogin.h"
 #include "utility.h"
-
-#ifdef HAS_DBUS
-#include <QDBusConnection>
-#include <QDBusReply>
-#include <QGuiApplication>
-#endif
 
 using namespace Qt::StringLiterals;
 
@@ -287,38 +282,14 @@ QCoro::Task<> LauncherCore::beginAutoConfiguration(Account *account, QString url
 
 void LauncherCore::inhibitSleep()
 {
-#ifdef HAS_DBUS
-    if (screenSaverDbusCookie != 0)
-        return;
-
-    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.ScreenSaver"),
-                                                          QStringLiteral("/ScreenSaver"),
-                                                          QStringLiteral("org.freedesktop.ScreenSaver"),
-                                                          QStringLiteral("Inhibit"));
-    message << QGuiApplication::desktopFileName();
-    message << i18n("Playing FFXIV");
-
-    const QDBusReply<uint> reply = QDBusConnection::sessionBus().call(message);
-    if (reply.isValid()) {
-        screenSaverDbusCookie = reply.value();
-    }
-#endif
+    uninhibitSleep(); // clean up the previous one (if any)
+    m_inhibitor = new KSystemInhibitor(i18n("Playing a game"), KSystemInhibitor::Type::Suspend, nullptr, this);
 }
 
 void LauncherCore::uninhibitSleep()
 {
-#ifdef HAS_DBUS
-    if (screenSaverDbusCookie == 0)
-        return;
-
-    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.ScreenSaver"),
-                                                          QStringLiteral("/ScreenSaver"),
-                                                          QStringLiteral("org.freedesktop.ScreenSaver"),
-                                                          QStringLiteral("UnInhibit"));
-    message << static_cast<uint>(screenSaverDbusCookie);
-    screenSaverDbusCookie = 0;
-    QDBusConnection::sessionBus().send(message);
-#endif
+    delete m_inhibitor;
+    m_inhibitor = nullptr;
 }
 
 QString LauncherCore::currentProfileId() const
