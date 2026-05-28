@@ -88,10 +88,6 @@ if (NOT MSVC)
     target_compile_options(umbra_static PUBLIC -fexceptions)
 endif ()
 
-if (BUILD_FLATPAK)
-    target_compile_definitions(umbra_static PUBLIC FLATPAK)
-endif ()
-
 # For screensaver inhibition on Linux
 if (TARGET Qt6::DBus)
     target_link_libraries(umbra_static PRIVATE Qt6::DBus)
