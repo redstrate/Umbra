@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#ifdef Q_OS_LINUX
+#include <KFileMetaData/UserMetaData>
+#endif
 #include <KLocalizedString>
 #include <QDir>
 #include <QImage>
@@ -348,6 +351,18 @@ void LauncherCore::resetServerConfiguration(Account *account)
     account->config()->setLoginServer({});
 
     Q_EMIT account->resetConfiguration();
+}
+
+QString LauncherCore::readHostPath(const QString &path)
+{
+#ifdef Q_OS_LINUX
+    KFileMetaData::UserMetaData metadata(path);
+    if (metadata.hasAttribute(QStringLiteral("document-portal.host-path"))) {
+        return metadata.attribute(QStringLiteral("document-portal.host-path"));
+    }
+#endif
+
+    return path;
 }
 
 #include "moc_launchercore.cpp"
