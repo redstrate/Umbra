@@ -48,7 +48,6 @@ class LauncherCore : public QObject
     QML_SINGLETON
 
     Q_PROPERTY(bool loadingFinished READ isLoadingFinished NOTIFY loadingFinished)
-    Q_PROPERTY(bool isWindows READ isWindows CONSTANT)
     Q_PROPERTY(Config *config READ config CONSTANT)
     Q_PROPERTY(ProfileManager *profileManager READ profileManager CONSTANT)
     Q_PROPERTY(AccountManager *accountManager READ accountManager CONSTANT)
@@ -85,7 +84,6 @@ public:
     void setupIgnoreSSL(QNetworkReply *reply);
 
     [[nodiscard]] bool isLoadingFinished() const;
-    [[nodiscard]] static bool isWindows();
     [[nodiscard]] static bool needsCompatibilityTool();
     [[nodiscard]] Q_INVOKABLE bool isPatching() const;
 
