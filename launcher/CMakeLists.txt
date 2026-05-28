@@ -78,7 +78,8 @@ target_link_libraries(umbra_static PUBLIC
         QCoro::Core
         QCoro::Network
         QCoro::Qml
-        physis)
+        physis
+        KF6::GuiAddons)
 if (LINUX)
     target_link_libraries(umbra_static PUBLIC KF6::FileMetaData)
 endif()
@@ -89,12 +90,6 @@ target_include_directories(umbra_static PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inclu
 
 if (NOT MSVC)
     target_compile_options(umbra_static PUBLIC -fexceptions)
-endif ()
-
-# For screensaver inhibition on Linux
-if (TARGET Qt6::DBus)
-    target_link_libraries(umbra_static PRIVATE Qt6::DBus)
-    target_compile_definitions(umbra_static PRIVATE -DHAS_DBUS)
 endif ()
 
 add_executable(umbra)
