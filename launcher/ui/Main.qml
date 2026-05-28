@@ -88,11 +88,7 @@ Kirigami.ApplicationWindow {
     }
 
     function pushDialogLayer(url: string): void {
-        if (LauncherCore.isSteamDeck) {
-            pageStack.layers.push(url)
-        } else {
-            pageStack.pushDialogLayer(url)
-        }
+        pageStack.pushDialogLayer(url);
     }
 
     function openUrl(url: string): void {
