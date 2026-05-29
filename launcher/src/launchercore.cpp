@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include "launchercore.h"
+
 #ifdef Q_OS_LINUX
 #include <KFileMetaData/UserMetaData>
 #endif
@@ -16,11 +18,10 @@
 #include "account.h"
 #include "accountconfig.h"
 #include "assetupdater.h"
-#include "umbra_log.h"
 #include "gamerunner.h"
-#include "launchercore.h"
 #include "profileconfig.h"
 #include "squareenixlogin.h"
+#include "umbra_log.h"
 #include "utility.h"
 
 using namespace Qt::StringLiterals;
