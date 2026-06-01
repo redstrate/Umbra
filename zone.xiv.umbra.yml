@@ -36,6 +36,8 @@ finish-args:
   - --device=all
   # It's a 32-bit game!
   - --allow=multiarch
+  # Needed for winedbg to function
+  - --allow=devel
 modules:
   - name: qtkeychain
     cleanup:
