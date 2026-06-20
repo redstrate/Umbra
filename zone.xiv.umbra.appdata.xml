@@ -7,9 +7,9 @@
     <id>zone.xiv.umbra</id>
     <metadata_license>CC0-1.0</metadata_license>
     <name>Umbra</name>
-    <summary>Linux FFXIV Launcher</summary>
+    <summary>Unofficial FFXIV launcher for 1.x</summary>
     <description>
-        <p>A unofficial FFXIV launcher for 1.x clients.</p>
+        <p>Linux FFXIV launcher that supports profiles, multiple accounts!</p>
     </description>
     <categories>
         <category>Game</category>
@@ -19,9 +19,8 @@
         <keyword translate="no">ffxiv</keyword>
         <keyword translate="no">ff14</keyword>
     </keywords>
-    <url type="homepage">https://xiv.zone/umbra</url>
-    <url type="bugtracker">https://github.com/redstrate/umbra/issues</url>
-    <url type="faq">https://xiv.zone/umbra/faq</url>
+    <url type="homepage">https://xiv.zone/software/umbra</url>
+    <url type="bugtracker">https://github.com/redstrate/umbra/issues/new</url>
     <url type="contact">https://redstrate.com/contact</url>
     <url type="vcs-browser">https://github.com/redstrate/umbra</url>
     <launchable type="desktop-id">zone.xiv.umbra.desktop</launchable>
@@ -45,10 +44,27 @@
         <control>touch</control>
     </supports>
     <project_license>GPL-3.0</project_license>
-    <developer_name>redstrate</developer_name>
+    <developer id="com.redstrate">
+        <name>redstrate</name>
+    </developer>
     <screenshots>
         <screenshot type="default">
             <image width="1033" height="667">https://xiv.zone/umbra/main-screenshot.png</image>
         </screenshot>
     </screenshots>
+    <branding>
+        <color type="primary" scheme_preference="light">#8d3535</color>
+        <color type="primary" scheme_preference="dark">#8d3535</color>
+    </branding>
+    <content_rating type="oars-1.1">
+        <content_attribute id="violence-fantasy">intense</content_attribute>
+        <content_attribute id="violence-bloodshed">moderate</content_attribute>
+        <content_attribute id="violence-desecration">mild</content_attribute>
+        <content_attribute id="drugs-alcohol">mild</content_attribute>
+        <content_attribute id="sex-nudity">mild</content_attribute>
+        <content_attribute id="sex-themes">mild</content_attribute>
+        <content_attribute id="language-profanity">moderate</content_attribute>
+        <content_attribute id="language-humor">mild</content_attribute>
+        <content_attribute id="social-chat">moderate</content_attribute>
+    </content_rating>
 </component>
