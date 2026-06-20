@@ -7,6 +7,7 @@
 #include "accountconfig.h"
 #include "profile.h"
 #include "profileconfig.h"
+#include "umbra_log.h"
 
 #include <KLocalizedString>
 #include <QDir>
@@ -22,14 +23,14 @@ QString patchGameExecutable(const Profile &profile)
 
     if (!QFile::exists(backupExePath)) {
         if (!QFile::copy(originalGameExecutable, backupExePath)) {
-            qWarning() << "Failed to copy original game EXE for patching!";
+            qCWarning(UMBRA_LOG) << "Failed to copy original game EXE for patching!";
             return i18n("Failed to copy original game EXE for patching!");
         }
     }
 
     QFile originalExe(backupExePath);
     if (!originalExe.open(QIODevice::ReadOnly)) {
-        qWarning() << "Failed to patch:" << originalExe.errorString();
+        qCWarning(UMBRA_LOG) << "Failed to patch:" << originalExe.errorString();
         return i18n("Failed to patch: %1").arg(originalExe.errorString());
     }
 
@@ -53,7 +54,7 @@ QString patchGameExecutable(const Profile &profile)
 
     QFile newExe(originalGameExecutable);
     if (!newExe.open(QIODevice::WriteOnly)) {
-        qWarning() << "Failed to patch:" << newExe.errorString();
+        qCWarning(UMBRA_LOG) << "Failed to patch:" << newExe.errorString();
         return i18n("Failed to patch: %1").arg(newExe.errorString());
     }
     newExe.write(exeData);
