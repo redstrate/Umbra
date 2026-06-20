@@ -121,6 +121,7 @@ qt_target_qml_sources(umbra_static
         ui/Settings/ProfileSettings.qml
         ui/Settings/ProfilesPage.qml
         ui/Settings/SettingsPage.qml
+        ui/Settings/TroubleshootingPage.qml
         ui/Setup/AccountSetup.qml
         ui/Setup/AddSquareEnix.qml
         ui/Setup/SetupPage.qml
