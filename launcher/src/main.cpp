@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     const KDSingleApplication singleApplication;
     if (!singleApplication.isPrimaryInstance()) {
-        qCWarning(UMBRA_LOG) << "Astra is already running";
+        qCWarning(UMBRA_LOG) << "Umbra is already running";
         return 0;
     }
 

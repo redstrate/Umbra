@@ -127,16 +127,6 @@ qt_target_qml_sources(umbra_static
         ui/Main.qml
 )
 
-set_source_files_properties(../zone.xiv.umbra.svg PROPERTIES
-        QT_RESOURCE_ALIAS /zone.xiv.umbra.svg
-)
-
-qt_target_qml_sources(umbra_static
-        PREFIX /
-        RESOURCES
-        ../zone.xiv.umbra.svg
-)
-
 target_link_libraries(umbra PRIVATE
         umbra_static
         umbra_staticplugin
