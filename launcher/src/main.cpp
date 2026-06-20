@@ -7,6 +7,7 @@
 #include <KLocalizedString>
 #include <KirigamiApp>
 #include <QApplication> // NOTE: do not remove this, if your IDE suggests to do so
+#include <QIcon>
 #include <QQuickStyle>
 #include <kdsingleapplication.h>
 #include <qcoroqml.h>
@@ -66,13 +67,18 @@ int main(int argc, char *argv[])
     }
 
     KLocalizedString::setApplicationDomain("umbra");
+    // KAboutData doesn't set organizationName yet
+    QGuiApplication::setOrganizationName("xiv.zone"_L1);
+    // This needs to be set before fromAppStreamForApplication can be used, so don't remove this!
+    QGuiApplication::setDesktopFileName(u"zone.xiv.umbra"_s);
 
-    KAboutData about(QStringLiteral("umbra"),
-                     i18n("Umbra"),
-                     QStringLiteral(UMBRA_VERSION_STRING),
-                     i18n("FFXIV 1.x Launcher"),
-                     KAboutLicense::GPL_V3,
-                     i18n("© 2026 Joshua Goins"));
+    auto about = KAboutData::fromAppStreamForApplication();
+    about.setVersion(QByteArrayLiteral(UMBRA_VERSION_STRING));
+    // Works around bug fixed with https://invent.kde.org/frameworks/kcoreaddons/-/merge_requests/582
+#if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 28, 0)
+    about.setComponentName(QStringLiteral("umbra"));
+#endif
+    about.setCopyrightStatement(i18n("© 2026 Joshua Goins"));
     about.setOtherText(
         i18n("FINAL FANTASY, FINAL FANTASY XIV, FFXIV, SQUARE ENIX, and the SQUARE ENIX logo are registered trademarks or "
              "trademarks of Square Enix Holdings Co., Ltd."));
@@ -81,19 +87,14 @@ int main(int argc, char *argv[])
                     QStringLiteral("josh@redstrate.com"),
                     QStringLiteral("https://redstrate.com/"),
                     QUrl(QStringLiteral("https://redstrate.com/rss-image.png")));
-    about.setHomepage(QStringLiteral("https://xiv.zone/umbra"));
     about.addComponent(QStringLiteral("KDSingleApplication"),
                        i18n("Helper class for single-instance policy applications."),
                        QStringLiteral("1.1.1"),
                        QStringLiteral("https://github.com/KDAB/KDSingleApplication"),
                        KAboutLicense::MIT);
-    about.setDesktopFileName(QStringLiteral("zone.xiv.umbra"));
-    about.setBugAddress(QByteArrayLiteral("https://github.com/redstrate/umbra/issues"));
-    about.setComponentName(QStringLiteral("umbra"));
-    about.setProgramLogo(QStringLiteral("zone.xiv.umbra"));
-    about.setOrganizationDomain(QByteArrayLiteral("xiv.zone"));
 
     KAboutData::setApplicationData(about);
+    QGuiApplication::setWindowIcon(QIcon::fromTheme(u"zone.xiv.umbra"_s));
 
     initializeLogging();
 
