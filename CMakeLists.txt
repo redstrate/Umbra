@@ -59,17 +59,14 @@ if (BUILD_TESTING)
 endif()
 
 install(FILES zone.xiv.umbra.appdata.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+install(FILES zone.xiv.umbra.svg DESTINATION ${KDE_INSTALL_FULL_ICONDIR}/hicolor/scalable/apps)
+install(FILES zone.xiv.umbra.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-if (NOT WIN32)
-    install(FILES zone.xiv.umbra.desktop DESTINATION ${KDE_INSTALL_APPDIR})
-    install(FILES zone.xiv.umbra.svg DESTINATION ${KDE_INSTALL_FULL_ICONDIR}/hicolor/scalable/apps)
-
-    ecm_qt_install_logging_categories(
-            EXPORT UMBRA
-            FILE umbra.categories
-            SORT DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
-    )
-endif()
+ecm_qt_install_logging_categories(
+        EXPORT UMBRA
+        FILE umbra.categories
+        SORT DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
+)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

@@ -34,12 +34,12 @@ FormCard.FormCardPage {
         }
     }
 
-    Image {
-        source: "qrc:/zone.xiv.umbra.svg"
+    Kirigami.Icon {
+        source: "zone.xiv.umbra"
 
-        fillMode: Image.PreserveAspectFit
         visible: !LauncherCore.profileManager.hasAnyExistingInstallations()
-
+        Layout.preferredWidth: Math.round(Kirigami.Units.iconSizes.huge * 1.5)
+        Layout.preferredHeight: Math.round(Kirigami.Units.iconSizes.huge * 1.5)
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.margins: Kirigami.Units.largeSpacing * 3
