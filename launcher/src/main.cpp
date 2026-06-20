@@ -69,8 +69,6 @@ int main(int argc, char *argv[])
     }
 
     KLocalizedString::setApplicationDomain("umbra");
-    // KAboutData doesn't set organizationName yet
-    QGuiApplication::setOrganizationName("xiv.zone"_L1);
     // This needs to be set before fromAppStreamForApplication can be used, so don't remove this!
     QGuiApplication::setDesktopFileName(u"zone.xiv.umbra"_s);
 

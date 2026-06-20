@@ -43,6 +43,12 @@ KirigamiSettings.ConfigurationView {
             visible: LauncherCore.config.showDevTools
         },
         KirigamiSettings.ConfigurationModule {
+            moduleId: "troubleshooting"
+            text: i18n("Troubleshooting")
+            icon.name: "error-symbolic"
+            page: () => Qt.createComponent("zone.xiv.umbra", "TroubleshootingPage")
+        },
+        KirigamiSettings.ConfigurationModule {
             moduleId: "about"
             text: i18n("About Umbra")
             icon.name: "help-about-symbolic"
