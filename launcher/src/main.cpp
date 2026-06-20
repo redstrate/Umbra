@@ -16,13 +16,12 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
-#include "umbra_log.h"
 #endif
 
-#include "umbra-version.h"
 #include "launchercore.h"
 #include "logger.h"
+#include "umbra-version.h"
+#include "umbra_log.h"
 #include "utility.h"
 
 using namespace Qt::StringLiterals;
@@ -57,6 +56,7 @@ int main(int argc, char *argv[])
 
     const KDSingleApplication singleApplication;
     if (!singleApplication.isPrimaryInstance()) {
+        qCWarning(UMBRA_LOG) << "Astra is already running";
         return 0;
     }
 
@@ -121,6 +121,7 @@ int main(int argc, char *argv[])
 
     engine.loadFromModule(QStringLiteral("zone.xiv.umbra"), QStringLiteral("Main"));
     if (engine.rootObjects().isEmpty()) {
+        qCWarning(UMBRA_LOG) << "Failed to start application due to QML failing to load!";
         return -1;
     }
 
