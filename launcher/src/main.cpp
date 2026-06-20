@@ -10,6 +10,8 @@
 #include <QIcon>
 #include <QQuickStyle>
 #include <kdsingleapplication.h>
+#include <kdsingleapplication_version.h>
+#include <physis.hpp>
 #include <qcoroqml.h>
 
 #ifdef Q_OS_WINDOWS
@@ -87,9 +89,19 @@ int main(int argc, char *argv[])
                     QStringLiteral("josh@redstrate.com"),
                     QStringLiteral("https://redstrate.com/"),
                     QUrl(QStringLiteral("https://redstrate.com/rss-image.png")));
+    about.addComponent(QStringLiteral("physis"),
+                       i18n("Library for reading and writing FFXIV data."),
+                       QString::fromLatin1(physis_get_physis_version()),
+                       QStringLiteral("https://xiv.zone/physis"),
+                       KAboutLicense::GPL_V3);
+    about.addComponent(QStringLiteral("libphysis"),
+                       i18n("C/C++ bindings for Physis."),
+                       QString::fromLatin1(physis_get_libphysis_version()),
+                       QStringLiteral("https://github.com/redstrate/libphysis"),
+                       KAboutLicense::GPL_V3);
     about.addComponent(QStringLiteral("KDSingleApplication"),
                        i18n("Helper class for single-instance policy applications."),
-                       QStringLiteral("1.1.1"),
+                       QString::fromLatin1(KDSINGLEAPPLICATION_VERSION_STRING),
                        QStringLiteral("https://github.com/KDAB/KDSingleApplication"),
                        KAboutLicense::MIT);
 
