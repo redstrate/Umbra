@@ -56,3 +56,12 @@ QString Utility::repositoryFromPatchUrl(const QString &url)
     auto url_parts = url.split('/'_L1);
     return url_parts[url_parts.size() - 3];
 }
+
+QString Utility::toWindowsPath(const QDir &dir)
+{
+#ifdef Q_OS_WINDOWS
+    return dir.absolutePath().replace('/'_L1, '\\'_L1);
+#else
+    return QStringLiteral("Z:") + dir.absolutePath().replace('/'_L1, '\\'_L1);
+#endif
+}

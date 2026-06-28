@@ -34,5 +34,18 @@ SPDX-License-Identifier: CC0-1.0
       <entry key="WinePrefixPath" type="Path">
         <default code="true">AccountManager::getDefaultWinePrefixPath(mParamuuid)</default>
       </entry>
+      <entry key="Language" type="Enum">
+        <choices>
+          <choice name="Japanese">
+          </choice>
+          <choice name="English">
+          </choice>
+          <choice name="German">
+          </choice>
+          <choice name="French">
+          </choice>
+        </choices>
+        <default>English</default>
+      </entry>
     </group>
 </kcfg>

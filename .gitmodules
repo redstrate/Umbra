@@ -4,3 +4,6 @@
 [submodule "external/libphysis"]
 	path = external/libphysis
 	url = https://github.com/redstrate/libphysis
+[submodule "external/libkrasis"]
+	path = external/libkrasis
+	url = https://codeberg.org/redstrate/libkrasis.git

@@ -22,6 +22,12 @@ corrosion_import_crate(MANIFEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libphysis/Cargo
 
 target_include_directories(physis INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/libphysis/target/public)
 
+corrosion_import_crate(MANIFEST_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libkrasis/Cargo.toml
+        NO_DEFAULT_FEATURES
+        CRATE_TYPES staticlib)
+
+target_include_directories(krasis INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/libkrasis/target/public)
+
 set(KDSingleApplication_QT6 ON)
 set(KDSingleApplication_STATIC ON)
 add_subdirectory(kdsingleapplication EXCLUDE_FROM_ALL)

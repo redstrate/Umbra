@@ -6,7 +6,9 @@
 #include <QtQml>
 #include <qcorotask.h>
 
+class LauncherCore;
 class AccountConfig;
+class ConfigSys;
 
 class Account : public QObject
 {
@@ -17,9 +19,10 @@ class Account : public QObject
     Q_PROPERTY(AccountConfig *config READ config CONSTANT)
     Q_PROPERTY(bool needsPassword READ needsPassword NOTIFY needsPasswordChanged)
     Q_PROPERTY(bool isWinePrefixDefault READ isWinePrefixDefault NOTIFY winePrefixChanged)
+    Q_PROPERTY(ConfigSys *configSys READ configSys CONSTANT)
 
 public:
-    explicit Account(const QString &key, QObject *parent = nullptr);
+    explicit Account(const QString &key, LauncherCore *core, QObject *parent = nullptr);
     ~Account() override;
 
     [[nodiscard]] QString uuid() const;
@@ -31,6 +34,10 @@ public:
     bool isWinePrefixDefault() const;
 
     AccountConfig *config() const;
+    [[nodiscard]] ConfigSys *configSys() const;
+
+    Q_INVOKABLE void writeConfigSys();
+    Q_INVOKABLE void writeConfigLng();
 
 Q_SIGNALS:
     bool needsPasswordChanged();
@@ -40,6 +47,10 @@ Q_SIGNALS:
 
 private:
     QCoro::Task<> fetchPassword();
+    void readConfigSys();
+    QString configSysPath() const;
+    QString configLngPath() const;
+    QDir ffxivPath() const;
 
     /**
      * @brief Sets a value in the keychain. This function is asynchronous.
@@ -54,4 +65,6 @@ private:
     AccountConfig *m_config;
     QString m_key;
     bool m_needsPassword = false;
+    ConfigSys *m_configSys;
+    LauncherCore *m_core;
 };

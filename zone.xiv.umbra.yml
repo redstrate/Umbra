@@ -38,6 +38,8 @@ finish-args:
   - --allow=multiarch
   # Needed for winedbg to function
   - --allow=devel
+  # Default directory for screenshots
+  - --filesystem=xdg-pictures:rw
 modules:
   - name: qtkeychain
     cleanup:

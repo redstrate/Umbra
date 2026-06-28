@@ -5,13 +5,12 @@
 
 #include <KLocalizedString>
 #include <QFile>
-#include <QJsonDocument>
 #include <QProcess>
 
 #include "account.h"
-#include "umbra_log.h"
 #include "launchercore.h"
 #include "profileconfig.h"
+#include "umbra_log.h"
 #include "utility.h"
 
 using namespace Qt::StringLiterals;

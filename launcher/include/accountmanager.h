@@ -14,7 +14,7 @@ class AccountManager : public QAbstractListModel
     Q_PROPERTY(int numAccounts READ numAccounts NOTIFY accountsChanged)
 
 public:
-    explicit AccountManager(QObject *parent = nullptr);
+    explicit AccountManager(LauncherCore *core, QObject *parent = nullptr);
 
     void load();
 
@@ -48,4 +48,5 @@ private:
     void insertAccount(Account *account);
 
     QList<Account *> m_accounts;
+    LauncherCore *m_core;
 };

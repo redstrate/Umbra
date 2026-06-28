@@ -48,5 +48,22 @@ FormCard.FormCardPage {
                 LauncherCore.config.save();
             }
         }
+
+        FormCard.FormDelegateSeparator {
+            above: showDevToolsDelegate
+            below: screenshotsPathDelegate
+        }
+
+        FormFolderDelegate {
+            id: screenshotsPathDelegate
+
+            text: i18n("Screenshots Folder")
+            folder: LauncherCore.readHostPath(LauncherCore.config.screenshotDir)
+
+            onAccepted: (folder) => {
+                LauncherCore.config.screenshotDir = folder;
+                LauncherCore.config.save();
+            }
+        }
     }
 }

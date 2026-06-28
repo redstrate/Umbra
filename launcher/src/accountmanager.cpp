@@ -9,8 +9,9 @@
 
 using namespace Qt::StringLiterals;
 
-AccountManager::AccountManager(QObject *parent)
+AccountManager::AccountManager(LauncherCore *core, QObject *parent)
     : QAbstractListModel(parent)
+    , m_core(core)
 {
 }
 
@@ -22,7 +23,7 @@ void AccountManager::load()
             const QString uuid = QString(id).remove("account-"_L1);
             qInfo(UMBRA_LOG) << "Loading account" << uuid;
 
-            const auto account = new Account(uuid, this);
+            const auto account = new Account(uuid, m_core, this);
             m_accounts.append(account);
             Q_EMIT accountsChanged();
             Q_EMIT accountAdded(account);
@@ -57,7 +58,7 @@ QHash<int, QByteArray> AccountManager::roleNames() const
 
 Account *AccountManager::createSquareEnixAccount(const QString &username)
 {
-    const auto account = new Account(QUuid::createUuid().toString(), this);
+    const auto account = new Account(QUuid::createUuid().toString(), m_core, this);
     account->config()->setName(username);
     account->config()->save();
 

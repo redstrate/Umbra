@@ -31,6 +31,12 @@ void GameRunner::beginGameExecutable(Profile &profile, const std::optional<Login
         return;
     }
 
+    // Flush config.sys (so the screenshot dir is reliably applied too)
+    profile.account()->writeConfigSys();
+
+    // Flush config.lng
+    profile.account()->writeConfigLng();
+
     const QString gameExecutable = QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivgame.exe"));
     beginVanillaGame(gameExecutable, profile, auth);
 

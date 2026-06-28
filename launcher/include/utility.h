@@ -14,4 +14,5 @@ void setSSL(QNetworkRequest &request);
 QString readVersion(const QString &path);
 void writeVersion(const QString &path, const QString &version);
 QString repositoryFromPatchUrl(const QString &url);
+QString toWindowsPath(const QDir &dir);
 }

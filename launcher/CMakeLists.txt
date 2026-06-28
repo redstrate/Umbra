@@ -51,6 +51,7 @@ target_sources(umbra_static PRIVATE
         include/blowfish.h
         include/patcher.h
         include/gamepatcher.h
+        include/configsys.h
 
         src/accountmanager.cpp
         src/assetupdater.cpp
@@ -66,7 +67,8 @@ target_sources(umbra_static PRIVATE
         src/encryptedarg.cpp
         src/blowfish.cpp
         src/patcher.cpp
-        src/gamepatcher.cpp)
+        src/gamepatcher.cpp
+        src/configsys.cpp)
 target_include_directories(umbra_static PUBLIC include)
 target_link_libraries(umbra_static PUBLIC
         Qt6::Core
@@ -83,7 +85,8 @@ target_link_libraries(umbra_static PUBLIC
         QCoro::Network
         QCoro::Qml
         physis
-        KF6::GuiAddons)
+        KF6::GuiAddons
+        krasis)
 if (LINUX)
     target_link_libraries(umbra_static PUBLIC KF6::FileMetaData)
 endif()

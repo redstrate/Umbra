@@ -12,7 +12,7 @@ class AccountManagerTest : public QObject
 private Q_SLOTS:
     void testNothing()
     {
-        AccountManager accountManager;
+        AccountManager accountManager(nullptr);
         QAbstractItemModelTester modelTester(&accountManager);
 
         const QSignalSpy accountsChangedSpy(&accountManager, &AccountManager::accountsChanged);
@@ -38,7 +38,7 @@ private Q_SLOTS:
 
     void testAccountManagement()
     {
-        AccountManager accountManager;
+        AccountManager accountManager(nullptr);
         QAbstractItemModelTester modelTester(&accountManager);
 
         const QSignalSpy accountsChangedSpy(&accountManager, &AccountManager::accountsChanged);

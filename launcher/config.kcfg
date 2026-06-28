@@ -8,6 +8,7 @@ SPDX-FileCopyrightText: Joshua Goins <josh@redstrate.com>
 SPDX-License-Identifier: CC0-1.0
 -->
   <kcfgfile arg="true" />
+  <include>QDir</include>
   <group name="General">
     <entry name="CloseWhenLaunched" type="bool">
       <default>true</default>
@@ -21,6 +22,9 @@ SPDX-License-Identifier: CC0-1.0
     </entry>
     <entry name="VerboseLogging" type="bool">
       <default>false</default>
+    </entry>
+    <entry name="ScreenshotDir" type="String">
+      <default code="true">QDir(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)).absoluteFilePath(QStringLiteral("FFXIV 1.0"))</default>
     </entry>
   </group>
   <group name="Sync">
