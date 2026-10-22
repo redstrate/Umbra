@@ -93,7 +93,7 @@ QQC2.Control {
 
         FormCard.FormCard {
             maximumWidth: Kirigami.Units.gridUnit * 25
-            visible: LauncherCore.profileManager.numProfiles > 1
+            visible: LauncherCore.profileManager.rowCount() > 1
 
             Layout.fillWidth: true
 
@@ -141,7 +141,7 @@ QQC2.Control {
             FormCard.FormButtonDelegate {
                 id: currentAccountDelegate
 
-                enabled: LauncherCore.accountManager.numAccounts > 1
+                enabled: LauncherCore.accountManager.rowCount() > 1
                 text: LauncherCore.currentProfile.account.config.name
 
                 leadingPadding: Kirigami.Units.largeSpacing * 2

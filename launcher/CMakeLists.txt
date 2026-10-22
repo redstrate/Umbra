@@ -77,6 +77,7 @@ target_link_libraries(umbra_static PUBLIC
         Qt6::Concurrent
         Qt6Keychain::Qt6Keychain
         KF6::I18n
+        KF6::I18nQml
         KF6::CoreAddons
         KF6::ConfigCore
         KF6::ConfigGui

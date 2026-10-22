@@ -67,7 +67,7 @@ void Profile::readGameVersion()
 QString Profile::winePath() const
 {
     switch (config()->wineType()) {
-    case WineType::BuiltIn: {
+    case BuiltIn: {
         const QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         const QDir compatibilityToolDir = dataDir.absoluteFilePath(QStringLiteral("tool"));
         const QDir wineDir = compatibilityToolDir.absoluteFilePath(QStringLiteral("wine"));
@@ -75,7 +75,7 @@ QString Profile::winePath() const
 
         return wineBinDir.absoluteFilePath(QStringLiteral("wine64"));
     }
-    case WineType::Custom: // custom pth
+    case Custom: // custom pth
         return m_config->winePath();
     default:
         return {};

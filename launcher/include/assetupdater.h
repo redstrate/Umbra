@@ -39,7 +39,6 @@ private:
     QTemporaryDir m_tempDir;
     QDir m_wineDir;
     QDir m_dxvkDir;
-    QDir m_dataDir;
 
     QString m_remoteCompatibilityToolVersion;
     QString m_remoteCompatibilityToolUrl;

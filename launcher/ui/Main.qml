@@ -60,7 +60,7 @@ Kirigami.ApplicationWindow {
             })
         } else if (!LauncherCore.currentProfile.account) {
             // User must select an account for the profile
-            if (LauncherCore.accountManager.hasAnyAccounts()) {
+            if (LauncherCore.accountManager.rowCount() > 0) {
                 // They have another account they could select
                 pageStack.push(Qt.createComponent("zone.xiv.umbra", "AccountSetup"), {
                     profile: LauncherCore.currentProfile

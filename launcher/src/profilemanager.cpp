@@ -45,7 +45,7 @@ Profile *ProfileManager::getProfileByUUID(const QString &uuid)
 Profile *ProfileManager::addProfile()
 {
     QString newProfileName;
-    if (m_profiles.size() == 0) {
+    if (m_profiles.empty()) {
         newProfileName = i18n("Default");
     } else {
         newProfileName = i18n("New Profile (%1)", m_profiles.size());
@@ -62,10 +62,6 @@ Profile *ProfileManager::addProfile()
 
 void ProfileManager::deleteProfile(Profile *profile, const bool deleteFiles)
 {
-    auto config = KSharedConfig::openStateConfig();
-    config->deleteGroup(QStringLiteral("profile-%1").arg(profile->uuid()));
-    config->sync();
-
     // delete files if requested
     if (deleteFiles) {
         QDir(profile->config()->gamePath()).removeRecursively();
@@ -75,7 +71,15 @@ void ProfileManager::deleteProfile(Profile *profile, const bool deleteFiles)
     beginRemoveRows(QModelIndex(), row, row);
     m_profiles.removeAll(profile);
     endRemoveRows();
-    Q_EMIT profilesChanged();
+
+    const QString uuid = profile->uuid();
+
+    // We want to delete the Profile object first, so it doesn't attempt to re-save the config.
+    delete profile;
+
+    auto config = KSharedConfig::openStateConfig();
+    config->deleteGroup(QStringLiteral("profile-%1").arg(uuid));
+    config->sync();
 }
 
 QString ProfileManager::getDefaultGamePath(const QString &uuid)
@@ -89,7 +93,7 @@ void ProfileManager::load()
 {
     auto config = KSharedConfig::openStateConfig();
     for (const auto &id : config->groupList()) {
-        if (id.contains("profile-"_L1)) {
+        if (id.startsWith("profile-"_L1)) {
             const QString uuid = QString(id).remove("profile-"_L1);
             qInfo(UMBRA_LOG) << "Loading profile" << uuid;
             const auto profile = new Profile(uuid, this);
@@ -103,9 +107,11 @@ void ProfileManager::load()
     }
 }
 
-int ProfileManager::rowCount(const QModelIndex &index) const
+int ProfileManager::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(index)
+    if (parent.isValid()) {
+        return 0;
+    }
     return static_cast<int>(m_profiles.size());
 }
 
@@ -133,7 +139,6 @@ void ProfileManager::insertProfile(Profile *profile)
     beginInsertRows(QModelIndex(), static_cast<int>(m_profiles.size()), static_cast<int>(m_profiles.size()));
     m_profiles.append(profile);
     endInsertRows();
-    Q_EMIT profilesChanged();
 }
 
 QList<Profile *> ProfileManager::profiles() const
@@ -141,9 +146,8 @@ QList<Profile *> ProfileManager::profiles() const
     return m_profiles;
 }
 
-bool ProfileManager::canDelete(const Profile *account) const
+bool ProfileManager::canDelete() const
 {
-    Q_UNUSED(account)
     return m_profiles.size() != 1;
 }
 
@@ -152,11 +156,6 @@ bool ProfileManager::hasAnyExistingInstallations() const
     return std::ranges::any_of(m_profiles, [](const auto &profile) {
         return profile->isGameInstalled();
     });
-}
-
-int ProfileManager::numProfiles() const
-{
-    return static_cast<int>(m_profiles.count());
 }
 
 #include "moc_profilemanager.cpp"

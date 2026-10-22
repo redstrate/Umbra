@@ -128,6 +128,10 @@ void GameRunner::launchExecutable(const Profile &profile, QProcess *process, con
         const QDir driveC = winePrefix.absoluteFilePath(QStringLiteral("drive_c"));
         const QDir windows = driveC.absoluteFilePath(QStringLiteral("windows"));
         const QDir system32 = windows.absoluteFilePath(QStringLiteral("syswow64"));
+        if (!system32.exists()) {
+            qCWarning(UMBRA_LOG) << "Stopping launch because we don't have a system32 directory?";
+            return; // something went horribly wrong, don't even touch this
+        }
 
         for (const auto &entry : dxvk64Dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot)) {
             if (QFile::exists(system32.absoluteFilePath(entry.fileName()))) {
@@ -150,6 +154,7 @@ void GameRunner::launchExecutable(const Profile &profile, QProcess *process, con
 
     const QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     const QString logDir = dataDir.absoluteFilePath(QStringLiteral("log"));
+    Utility::createPathIfNeeded(logDir);
 
     env.insert(QStringLiteral("DXVK_LOG_PATH"), logDir);
     if (!m_launcher.config()->gPUDeviceFilter().isEmpty()) {

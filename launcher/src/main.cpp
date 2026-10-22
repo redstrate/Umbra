@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <KAboutData>
-#include <KIconTheme>
-#include <KLocalizedContext>
+#include <KLocalizedQmlContext>
 #include <KLocalizedString>
-#include <KirigamiApp>
-#include <QApplication> // NOTE: do not remove this, if your IDE suggests to do so
+#include <KirigamiAppDefaults>
+#include <QApplication>
 #include <QCommandLineParser>
 #include <QIcon>
 #include <QQmlApplicationEngine>
@@ -18,8 +17,6 @@
 #include <qcoroqml.h>
 
 #ifdef Q_OS_WINDOWS
-#include <QStyleFactory>
-
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
@@ -50,15 +47,8 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    KIconTheme::initTheme(); // TODO: KirigamiApp doesn't call this before app construction so it doesn't work on Windows
-
-    KirigamiApp::App app(argc, argv);
-    KirigamiApp kapp;
-
-    // TODO: remove once https://invent.kde.org/libraries/kirigami-addons/-/merge_requests/399 is merged
-#ifdef Q_OS_WINDOWS
-    app.setStyle(QStyleFactory::create(QStringLiteral("Breeze")));
-#endif
+    QApplication app(argc, argv);
+    KirigamiAppDefaults::apply(&app);
 
     const KDSingleApplication singleApplication;
     if (!singleApplication.isPrimaryInstance()) {
@@ -129,8 +119,8 @@ int main(int argc, char *argv[])
     QCoro::Qml::registerTypes();
 
     QQmlApplicationEngine engine;
+    KLocalization::setupLocalizedContext(&engine);
 
-    engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     QObject::connect(&engine, &QQmlApplicationEngine::quit, &app, &QCoreApplication::quit);
 
     engine.loadFromModule(QStringLiteral("zone.xiv.umbra"), QStringLiteral("Main"));
