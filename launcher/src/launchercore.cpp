@@ -10,9 +10,10 @@
 #include <KSystemInhibitor>
 #include <QDir>
 #include <QImage>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QStandardPaths>
-#include <algorithm>
 #include <qcoronetworkreply.h>
 
 #include "account.h"

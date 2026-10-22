@@ -11,8 +11,8 @@
 #include <KZip>
 #include <QCoroSignal>
 #include <QFile>
-#include <QJsonDocument>
-#include <QNetworkReply>
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QStandardPaths>
 #include <qcorofuture.h>
 #include <qcoronetworkreply.h>

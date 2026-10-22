@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <QTemporaryDir>
 #include <qcorotask.h>
 
 #include "launchercore.h"
