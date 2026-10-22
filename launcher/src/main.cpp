@@ -67,10 +67,6 @@ int main(int argc, char *argv[])
 
     auto about = KAboutData::fromAppStreamForApplication();
     about.setVersion(QByteArrayLiteral(UMBRA_VERSION_STRING));
-    // Works around bug fixed with https://invent.kde.org/frameworks/kcoreaddons/-/merge_requests/582
-#if KCOREADDONS_VERSION < QT_VERSION_CHECK(6, 28, 0)
-    about.setComponentName(QStringLiteral("umbra"));
-#endif
     about.setCopyrightStatement(i18n("© 2026 Joshua Goins"));
     about.setOtherText(
         i18n("FINAL FANTASY, FINAL FANTASY XIV, FFXIV, SQUARE ENIX, and the SQUARE ENIX logo are registered trademarks or "
