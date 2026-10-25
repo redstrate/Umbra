@@ -104,6 +104,7 @@ public:
     Q_INVOKABLE void openConfigTool(Profile *profile);
 
     Q_INVOKABLE void downloadServerConfiguration(Account *account, const QString &url);
+    Q_INVOKABLE void checkIfServerIsValid(const QString &url);
 
     Q_INVOKABLE void resetServerConfiguration(Account *account);
 
@@ -130,6 +131,7 @@ Q_SIGNALS:
     void requiresUpdate(QString message);
     void updateDecided(bool allowUpdate);
     void assetDecided(bool shouldContinue);
+    void serverCheckResult(bool successful, QString title, QString message);
 
 protected:
     friend class Patcher;
@@ -142,6 +144,7 @@ private:
     QCoro::Task<> handleGameExit();
 
     QCoro::Task<> beginAutoConfiguration(Account *account, QString url);
+    QCoro::Task<> beginCheckIfServerIsValid(QString url);
 
     /// Tell the system to keep the screen on and don't go to sleep
     void inhibitSleep();

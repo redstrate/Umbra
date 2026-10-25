@@ -269,6 +269,7 @@ QCoro::Task<> LauncherCore::beginAutoConfiguration(Account *account, QString url
     co_await reply;
 
     if (reply->error() != QNetworkReply::NoError) {
+        qWarning(UMBRA_LOG) << "Failed to fetch configuration from" << url << reply->errorString();
         Q_EMIT account->autoConfigurationResult(i18n("Configuration Error"), i18n("Failed to fetch configuration from %1:\n\n%2", url, reply->errorString()));
         co_return;
     }
@@ -283,6 +284,25 @@ QCoro::Task<> LauncherCore::beginAutoConfiguration(Account *account, QString url
 
     Q_EMIT account->autoConfigurationResult(i18n("Configuration Successful"), i18n("Configuration from %1 applied! You can now log into this server.", url));
 
+    co_return;
+}
+
+QCoro::Task<> LauncherCore::beginCheckIfServerIsValid(QString url)
+{
+    // NOTE: url is intentionally copied so it doesn't deference during coroutine execution
+
+    QUrl requestUrl = QUrl::fromUserInput(url);
+    requestUrl.setPath(QStringLiteral("/.well-known/legacyxiv"));
+
+    auto reply = m_mgr->get(QNetworkRequest(requestUrl));
+    co_await reply;
+
+    if (reply->error() != QNetworkReply::NoError) {
+        Q_EMIT serverCheckResult(false, i18n("Configuration Error"), i18n("Failed to fetch configuration from %1:\n\n%2", url, reply->errorString()));
+        co_return;
+    }
+
+    Q_EMIT serverCheckResult(true, {}, {});
     co_return;
 }
 
@@ -318,6 +338,11 @@ void LauncherCore::openConfigTool(Profile *profile)
 void LauncherCore::downloadServerConfiguration(Account *account, const QString &url)
 {
     beginAutoConfiguration(account, url);
+}
+
+void LauncherCore::checkIfServerIsValid(const QString &url)
+{
+    beginCheckIfServerIsValid(url);
 }
 
 void LauncherCore::resetServerConfiguration(Account *account)

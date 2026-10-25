@@ -15,8 +15,30 @@ FormCard.FormCardPage {
 
     readonly property bool isValid: usernameField.text.length !== 0 && serverURLField.text.length !== 0
     property var profile
+    property var account
 
     title: i18n("Add New Account")
+
+    Connections {
+        target: LauncherCore
+
+        function onServerCheckResult(successful: bool, title: string, subtitle: string): void {
+            if (successful) {
+                let account = LauncherCore.accountManager.createSquareEnixAccount(usernameField.text);
+                LauncherCore.downloadServerConfiguration(account, serverURLField.text);
+                if (page.profile) {
+                    page.profile.account = account;
+                    applicationWindow().checkSetup();
+                } else {
+                    page.Window.window.pageStack.layers.pop();
+                }
+            } else {
+                configurationPrompt.title = title;
+                configurationPrompt.subtitle = subtitle;
+                configurationPrompt.visible = true;
+            }
+        }
+    }
 
     FormCard.FormCard {
         Layout.fillWidth: true
@@ -57,17 +79,15 @@ FormCard.FormCardPage {
             icon.name: "list-add-symbolic"
             text: i18n("Add Account")
 
-            onClicked: {
-                let account = LauncherCore.accountManager.createSquareEnixAccount(usernameField.text);
-                if (page.profile) {
-                    page.profile.account = account;
-                    LauncherCore.downloadServerConfiguration(account, serverURLField.text); // TODO: check result before continuing
-
-                    applicationWindow().checkSetup();
-                } else {
-                    page.Window.window.pageStack.layers.pop();
-                }
-            }
+            onClicked: LauncherCore.checkIfServerIsValid(serverURLField.text)
         }
+    }
+
+    Kirigami.PromptDialog {
+        id: configurationPrompt
+
+        standardButtons: Kirigami.Dialog.Ok
+        showCloseButton: false
+        parent: page.QQC2.Overlay.overlay
     }
 }
