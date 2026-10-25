@@ -41,6 +41,12 @@ QCoro::Task<std::optional<LoginAuth>> SquareEnixLogin::login(LoginInformation *i
     Q_ASSERT(info != nullptr);
     m_info = info;
 
+    if (info->profile->account()->config()->bootPatchServer().isEmpty()) {
+        qWarning(UMBRA_LOG) << "No server is setup for this account!";
+        Q_EMIT m_launcher.loginError(i18n("No server is setup for this account.\n\nSet one under Settings > Accounts > Servers."));
+        co_return std::nullopt;
+    }
+
     // First, let's check for boot updates. While not technically required for us, it's needed for later hash checking.
     // It's also a good idea anyway, in case the official launcher is needed.
     while (m_lastRunHasPatched) {
