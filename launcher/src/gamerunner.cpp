@@ -130,6 +130,7 @@ void GameRunner::launchExecutable(const Profile &profile, QProcess *process, con
         const QDir system32 = windows.absoluteFilePath(QStringLiteral("syswow64"));
         if (!system32.exists()) {
             qCWarning(UMBRA_LOG) << "Stopping launch because we don't have a system32 directory?";
+            Q_EMIT m_launcher.gameClosed(&profile);
             return; // something went horribly wrong, don't even touch this
         }
 
