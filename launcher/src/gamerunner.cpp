@@ -71,6 +71,9 @@ void GameRunner::beginVanillaGame(const QString &gameExecutablePath, Profile &pr
         qCInfo(UMBRA_LOG) << "Game process exited:" << exitCode;
         Q_EMIT m_launcher.gameClosed(&profile);
     });
+    connect(gameProcess, &QProcess::errorOccurred, this, [this, &profile] {
+        Q_EMIT m_launcher.gameClosed(&profile);
+    });
 
     auto args = getGameArgs(profile, auth);
 
