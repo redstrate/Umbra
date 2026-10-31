@@ -118,7 +118,7 @@ public:
 Q_SIGNALS:
     void loadingFinished();
     void successfulLaunch();
-    void gameClosed(Profile *profile);
+    void gameClosed(const Profile *profile);
     void loginError(QString message);
     void miscError(QString message);
     void assetError(QString message);
