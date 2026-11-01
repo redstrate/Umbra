@@ -50,9 +50,6 @@ public:
     [[nodiscard]] QString bootVersion() const;
     [[nodiscard]] QString baseGameVersion() const;
 
-    [[nodiscard]] QString compatibilityToolVersion() const;
-    void setCompatibilityToolVersion(const QString &version);
-
     [[nodiscard]] QString subtitle() const;
 
     ProfileConfig *config() const;
@@ -78,6 +75,4 @@ private:
 
     QString m_bootVersion;
     QString m_gameVersion;
-
-    QString m_compatibilityToolVersion;
 };

@@ -42,7 +42,6 @@ target_sources(umbra_static PRIVATE
         include/profile.h
         include/utility.h
         include/accountmanager.h
-        include/assetupdater.h
         include/gamerunner.h
         include/launchercore.h
         include/processlogger.h
@@ -54,7 +53,6 @@ target_sources(umbra_static PRIVATE
         include/configsys.h
 
         src/accountmanager.cpp
-        src/assetupdater.cpp
         src/gamerunner.cpp
         src/launchercore.cpp
         src/account.cpp

@@ -18,7 +18,6 @@
 
 #include "account.h"
 #include "accountconfig.h"
-#include "assetupdater.h"
 #include "gamerunner.h"
 #include "profileconfig.h"
 #include "squareenixlogin.h"
@@ -227,21 +226,16 @@ AccountManager *LauncherCore::accountManager()
 
 QCoro::Task<> LauncherCore::beginLogin(LoginInformation &info)
 {
-    std::optional<LoginAuth> auth = co_await m_squareEnixLogin->login(&info);
+    const std::optional<LoginAuth> auth = co_await m_squareEnixLogin->login(&info);
 
-    const auto assetUpdater = new AssetUpdater(*info.profile, *this, this);
-    if (co_await assetUpdater->update()) {
-        // If we expect an auth ticket, don't continue if missing
-        if (auth == std::nullopt) {
-            co_return;
-        }
-
-        Q_EMIT stageChanged(i18n("Launching game..."));
-
-        m_runner->beginGameExecutable(*info.profile, auth);
+    // If we expect an auth ticket, don't continue if missing
+    if (auth == std::nullopt) {
+        co_return;
     }
 
-    assetUpdater->deleteLater();
+    Q_EMIT stageChanged(i18n("Launching game..."));
+
+    m_runner->beginGameExecutable(*info.profile, auth);
 }
 
 QCoro::Task<> LauncherCore::handleGameExit()
