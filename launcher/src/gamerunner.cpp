@@ -117,36 +117,32 @@ void GameRunner::launchExecutable(const Profile &profile, QProcess *process, con
     QList<QString> arguments;
     auto env = process->processEnvironment();
 
-    if (needsRegistrySetup) {
 #if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-        setWindowsVersion(profile, QStringLiteral("win7"));
+    // Copy DXVK if using the built-in wine. currently this is tied to the same setting, mostly for ARM64 reasons
+    if (needsRegistrySetup && profile.config()->wineType() == Profile::WineType::BuiltIn) {
+        const QDir dxvkDir = QStringLiteral("/app/lib/dxvk/x32");
 
-        // copy DXVK if using the built-in wine. currently this is tied to the same setting, mostly for ARM64 reasons
-        if (profile.config()->wineType() == Profile::WineType::BuiltIn) {
-            const QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-            const QDir compatibilityToolDir = dataDir.absoluteFilePath(QStringLiteral("tool"));
-            const QDir dxvkDir = compatibilityToolDir.absoluteFilePath(QStringLiteral("dxvk"));
-            const QDir dxvk64Dir = dxvkDir.absoluteFilePath(QStringLiteral("x32"));
-
-            const QDir winePrefix = profile.account()->config()->winePrefixPath();
-            const QDir driveC = winePrefix.absoluteFilePath(QStringLiteral("drive_c"));
-            const QDir windows = driveC.absoluteFilePath(QStringLiteral("windows"));
-            const QDir system32 = windows.absoluteFilePath(QStringLiteral("syswow64"));
-            if (!system32.exists()) {
-                qCWarning(UMBRA_LOG) << "Stopping launch because we don't have a system32 directory?";
-                Q_EMIT m_launcher.gameClosed(&profile);
-                return; // something went horribly wrong, don't even touch this
-            }
-
-            for (const auto &entry : dxvk64Dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot)) {
-                if (QFile::exists(system32.absoluteFilePath(entry.fileName()))) {
-                    QFile::remove(system32.absoluteFilePath(entry.fileName()));
-                }
-                QFile::copy(entry.absoluteFilePath(), system32.absoluteFilePath(entry.fileName()));
-            }
+        const QDir winePrefix = profile.account()->config()->winePrefixPath();
+        const QDir driveC = winePrefix.absoluteFilePath(QStringLiteral("drive_c"));
+        const QDir windows = driveC.absoluteFilePath(QStringLiteral("windows"));
+        const QDir syswow64 = windows.absoluteFilePath(QStringLiteral("syswow64"));
+        if (!syswow64.exists()) {
+            qCWarning(UMBRA_LOG) << "Stopping launch because we don't have a syswow64 directory?";
+            Q_EMIT m_launcher.gameClosed(&profile);
+            return; // something went horribly wrong, don't even touch this
         }
-#endif
+
+        for (const auto &entry : dxvkDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot)) {
+            QFileInfo info(syswow64.absoluteFilePath(entry.fileName()));
+            if (info.symLinkTarget() == entry.absoluteFilePath()) {
+                continue;
+            }
+
+            QFile::remove(info.absoluteFilePath());
+            QFile::link(entry.absoluteFilePath(), info.absoluteFilePath());
+        }
     }
+#endif
 
     if (m_launcher.config()->enableRenderDocCapture()) {
         env.insert(QStringLiteral("VK_LAYER_RENDERDOC_Capture"), QStringLiteral("VK_LAYER_RENDERDOC_Capture"));

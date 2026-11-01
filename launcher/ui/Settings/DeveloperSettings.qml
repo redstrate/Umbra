@@ -102,76 +102,9 @@ FormCard.FormCardPage {
                 LauncherCore.config.save();
             }
         }
-    }
-
-    FormCard.FormHeader {
-        title: i18n("Servers")
-    }
-
-    FormCard.FormCard {
-        Layout.fillWidth: true
-
-        FormCard.FormTextFieldDelegate {
-            id: preferredProtocolDelegate
-
-            label: i18n("Preferred Protocol")
-            text: LauncherCore.config.preferredProtocol
-            onTextChanged: {
-                LauncherCore.config.preferredProtocol = text;
-                LauncherCore.config.save();
-            }
-        }
 
         FormCard.FormDelegateSeparator {
-            above: preferredProtocolDelegate
-            below: githubApiDelegate
-        }
-
-        FormCard.FormTextFieldDelegate {
-            id: githubApiDelegate
-
-            label: i18n("GitHub API")
-            text: LauncherCore.config.githubApi
-            onTextChanged: {
-                LauncherCore.config.githubApi = text;
-                LauncherCore.config.save();
-            }
-        }
-
-        FormCard.FormDelegateSeparator {
-            above: githubApiDelegate
-            below: dxvkRepositoryDelegate
-        }
-
-        FormCard.FormTextFieldDelegate {
-            id: dxvkRepositoryDelegate
-
-            label: i18n("DXVK Repository")
-            text: LauncherCore.config.dXVKRepository
-            onTextChanged: {
-                LauncherCore.config.dXVKRepository = text;
-                LauncherCore.config.save();
-            }
-        }
-
-        FormCard.FormDelegateSeparator {
-            above: dxvkRepositoryDelegate
-            below: wineRepositoryDelegate
-        }
-
-        FormCard.FormTextFieldDelegate {
-            id: wineRepositoryDelegate
-
-            label: i18n("Wine Repository")
-            text: LauncherCore.config.wineRepository
-            onTextChanged: {
-                LauncherCore.config.wineRepository = text;
-                LauncherCore.config.save();
-            }
-        }
-
-        FormCard.FormDelegateSeparator {
-            above: wineRepositoryDelegate
+            above: enableWaylandDelegate
             below: gpuDeviceDelegate
         }
 
