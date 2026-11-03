@@ -200,11 +200,3 @@ void GameRunner::launchExecutable(const Profile &profile, QProcess *process, con
 
     process->start();
 }
-
-void GameRunner::setWindowsVersion(const Profile &settings, const QString &version)
-{
-    const auto process = new QProcess(this);
-    process->setProcessEnvironment(QProcessEnvironment::systemEnvironment());
-    launchExecutable(settings, process, {QStringLiteral("winecfg"), QStringLiteral("/v"), version}, false, false);
-    process->waitForFinished();
-}

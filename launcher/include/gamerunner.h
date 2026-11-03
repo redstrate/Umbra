@@ -30,7 +30,5 @@ private:
     /// This wraps it in wine if needed.
     void launchExecutable(const Profile &profile, QProcess *process, const QStringList &args, bool isGame, bool needsRegistrySetup);
 
-    void setWindowsVersion(const Profile &settings, const QString &version);
-
     LauncherCore &m_launcher;
 };
