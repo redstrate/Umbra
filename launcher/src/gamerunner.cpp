@@ -43,22 +43,22 @@ void GameRunner::beginGameExecutable(Profile &profile, const std::optional<Login
     Q_EMIT m_launcher.successfulLaunch();
 }
 
-void GameRunner::openOfficialLauncher(Profile &profile)
+void GameRunner::openOfficialLauncher(const Profile &profile)
 {
     const auto process = new QProcess(this);
     process->setProcessEnvironment(QProcessEnvironment::systemEnvironment());
 
-    new ProcessLogger(QStringLiteral("ffxivlauncher"), process);
+    new ProcessLogger(profile.logDirectory(), QStringLiteral("ffxivlauncher"), process);
 
     launchExecutable(profile, process, {QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivboot.exe"))}, false, true);
 }
 
-void GameRunner::openConfigTool(Profile &profile)
+void GameRunner::openConfigTool(const Profile &profile)
 {
     const auto process = new QProcess(this);
     process->setProcessEnvironment(QProcessEnvironment::systemEnvironment());
 
-    new ProcessLogger(QStringLiteral("ffxivconfig"), process);
+    new ProcessLogger(profile.logDirectory(), QStringLiteral("ffxivconfig"), process);
 
     launchExecutable(profile, process, {QDir(profile.config()->gamePath()).absoluteFilePath(QStringLiteral("ffxivconfig.exe"))}, false, true);
 }
@@ -77,7 +77,7 @@ void GameRunner::beginVanillaGame(const QString &gameExecutablePath, Profile &pr
 
     auto args = getGameArgs(profile, auth);
 
-    new ProcessLogger(QStringLiteral("ffxivgame"), gameProcess);
+    new ProcessLogger(profile.logDirectory(), QStringLiteral("ffxivgame"), gameProcess);
 
     launchExecutable(profile, gameProcess, {gameExecutablePath, args}, true, true);
 }
@@ -154,8 +154,7 @@ void GameRunner::launchExecutable(const Profile &profile, QProcess *process, con
     env.insert(QStringLiteral("WINEFSYNC"), QString::number(1));
     env.insert(QStringLiteral("WINEFSYNC_FUTEX2"), QString::number(1));
 
-    const QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    const QString logDir = dataDir.absoluteFilePath(QStringLiteral("log"));
+    const QString logDir = profile.logDirectory().absolutePath();
     Utility::createPathIfNeeded(logDir);
 
     env.insert(QStringLiteral("DXVK_LOG_PATH"), logDir);

@@ -52,6 +52,13 @@ void Profile::readGameVersion()
     Q_EMIT versionTextChanged();
 }
 
+QDir Profile::logDirectory() const
+{
+    const QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    const QDir logDir = dataDir.absoluteFilePath(QStringLiteral("log"));
+    return logDir.absoluteFilePath(m_uuid);
+}
+
 QString Profile::winePath() const
 {
     switch (config()->wineType()) {

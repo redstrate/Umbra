@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <QDir>
 #include <QObject>
 #include <qqmlintegration.h>
 
@@ -57,6 +58,8 @@ public:
 
     [[nodiscard]] QString versionText() const;
     void readGameVersion();
+
+    [[nodiscard]] QDir logDirectory() const;
 
 Q_SIGNALS:
     void gameInstallChanged();

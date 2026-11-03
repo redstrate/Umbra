@@ -17,8 +17,8 @@ public:
 
     /// Begins the game executable.
     void beginGameExecutable(Profile &profile, const std::optional<LoginAuth> &auth);
-    void openOfficialLauncher(Profile &profile);
-    void openConfigTool(Profile &profile);
+    void openOfficialLauncher(const Profile &profile);
+    void openConfigTool(const Profile &profile);
 
 private:
     /// Starts a vanilla game session.
