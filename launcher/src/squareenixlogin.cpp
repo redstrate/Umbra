@@ -84,7 +84,7 @@ QCoro::Task<bool> SquareEnixLogin::checkBootUpdates()
 
     auto request = QNetworkRequest(url);
     request.setHeader(QNetworkRequest::KnownHeaders::UserAgentHeader, patchUserAgent);
-
+    request.setTransferTimeout();
     request.setRawHeader(QByteArrayLiteral("Host"), m_info->profile->account()->config()->bootPatchServer().toUtf8());
     Utility::printRequest(QStringLiteral("GET"), request);
 
@@ -257,6 +257,7 @@ QCoro::Task<bool> SquareEnixLogin::registerSession()
     request.setRawHeader(QByteArrayLiteral("X-Hash-Check"), QByteArrayLiteral("enabled"));
     request.setHeader(QNetworkRequest::KnownHeaders::UserAgentHeader, patchUserAgent);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
+    request.setTransferTimeout();
 
     Utility::printRequest(QStringLiteral("POST"), request);
 

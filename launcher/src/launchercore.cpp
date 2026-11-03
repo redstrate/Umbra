@@ -173,6 +173,7 @@ void LauncherCore::buildRequest(QNetworkRequest &request)
     request.setRawHeader(QByteArrayLiteral("Accept-Language"), QByteArrayLiteral("en-us"));
     request.setRawHeader(QByteArrayLiteral("Connection"), QByteArrayLiteral("Keep-Alive"));
     request.setRawHeader(QByteArrayLiteral("Cookie"), QByteArrayLiteral("_rsid=\"\""));
+    request.setTransferTimeout();
 }
 
 void LauncherCore::setupIgnoreSSL(QNetworkReply *reply)
@@ -259,7 +260,10 @@ QCoro::Task<> LauncherCore::beginAutoConfiguration(Account *account, QString url
     QUrl requestUrl = QUrl::fromUserInput(url);
     requestUrl.setPath(QStringLiteral("/.well-known/legacyxiv"));
 
-    auto reply = m_mgr->get(QNetworkRequest(requestUrl));
+    QNetworkRequest request(requestUrl);
+    request.setTransferTimeout();
+
+    auto reply = m_mgr->get(request);
     co_await reply;
 
     if (reply->error() != QNetworkReply::NoError) {
@@ -288,7 +292,10 @@ QCoro::Task<> LauncherCore::beginCheckIfServerIsValid(QString url)
     QUrl requestUrl = QUrl::fromUserInput(url);
     requestUrl.setPath(QStringLiteral("/.well-known/legacyxiv"));
 
-    auto reply = m_mgr->get(QNetworkRequest(requestUrl));
+    QNetworkRequest request(requestUrl);
+    request.setTransferTimeout();
+
+    auto reply = m_mgr->get(request);
     co_await reply;
 
     if (reply->error() != QNetworkReply::NoError) {
