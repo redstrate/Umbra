@@ -25,12 +25,42 @@
     <url type="vcs-browser">https://github.com/redstrate/umbra</url>
     <launchable type="desktop-id">zone.xiv.umbra.desktop</launchable>
     <releases>
-        <release version="0.3.1" date="2026-11-01"/>
-        <release version="0.3.0" date="2026-10-25"/>
-        <release version="0.2.0" date="2026-06-26"/>
-        <release version="0.1.2" date="2026-03-23"/>
-        <release version="0.1.1" date="2026-03-21"/>
-        <release version="0.1.0" date="2026-03-21"/>
+        <release version="0.3.1" date="2026-11-01">
+            <url>https://xiv.zone/software/umbra/changelog/0.3.1/</url>
+            <description>
+                <p>Minor release addressing some bugs and a major change to how Wine/DXVK is distributed.</p>
+            </description>
+        </release>
+        <release version="0.3.0" date="2026-10-25">
+            <url>https://xiv.zone/software/umbra/changelog/0.3.0/</url>
+            <description>
+                <p>New major release with some UX improvements around creating new accounts.</p>
+            </description>
+        </release>
+        <release version="0.2.0" date="2026-06-26">
+            <url>https://xiv.zone/software/umbra/changelog/0.2.0/</url>
+            <description>
+                <p>This release mostly focuses on bugfixes.</p>
+            </description>
+        </release>
+        <release version="0.1.2" date="2026-03-23">
+            <url>https://xiv.zone/software/umbra/changelog/0.1.2/</url>
+            <description>
+                <p>Changed how server settings are handled and stored, which will break existing configurations.</p>
+            </description>
+        </release>
+        <release version="0.1.1" date="2026-03-21">
+            <url>https://xiv.zone/software/umbra/changelog/0.1.1/</url>
+            <description>
+                <p>Fixed a few mistakes in the initial release.</p>
+            </description>
+        </release>
+        <release version="0.1.0" date="2026-03-21">
+            <url>https://xiv.zone/software/umbra/changelog/0.1.0/</url>
+            <description>
+                <p>First public release!</p>
+            </description>
+        </release>
     </releases>
     <provides>
         <binary>umbra</binary>

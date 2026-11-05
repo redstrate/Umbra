@@ -62,10 +62,8 @@ int main(int argc, char *argv[])
     }
 
     KLocalizedString::setApplicationDomain("umbra");
-    // This needs to be set before fromAppStreamForApplication can be used, so don't remove this!
-    QGuiApplication::setDesktopFileName(u"zone.xiv.umbra"_s);
 
-    auto about = KAboutData::fromAppStreamForApplication();
+    auto about = KAboutData::fromAppStreamId(u"zone.xiv.umbra"_s);
     about.setVersion(QByteArrayLiteral(UMBRA_VERSION_STRING));
     about.setCopyrightStatement(i18n("© 2026 Joshua Goins"));
     about.setOtherText(
