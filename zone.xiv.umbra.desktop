@@ -2,8 +2,8 @@
 # SPDX-FileCopyrightText: 2023 Joshua Goins <josh@redstrate.com>
 [Desktop Entry]
 Name=Umbra
-GenericName=FFXIV Launcher
-Comment=Linux launcher for FFXIV
+GenericName=Launcher for FFXIV 1.x
+Comment=Play FFXIV 1.x
 Exec=umbra %u
 Terminal=false
 Icon=zone.xiv.umbra
